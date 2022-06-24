@@ -1,0 +1,686 @@
+<%- include('../home.ejs'); -%>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <button
+        class="btn btn-success m-4"
+        data-toggle="modal"
+        data-target="#exampleModaladd"
+      >
+        Add movies
+      </button>
+    </div>
+    <div class="col m-4">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="movieFilter"
+          placeholder="Enter Movie name"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+        />
+        <div class="input-group-append">
+          <button
+            style="background-color: #d6ae7b"
+            class="btn"
+            type="button"
+            onclick="movieFilter()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Movie name</th>
+        <th scope="col">Movie image</th>
+        <th scope="col">Action</th>
+        <th scope="col">Action</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody id="showMovies"></tbody>
+  </table>
+</div>
+
+<div class="container">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="">Pagination</span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      id="skipNo"
+      placeholder="enter no of skip data"
+    />
+    <input
+      type="text"
+      class="form-control"
+      id="fetchNo"
+      placeholder="enter no of next data"
+    />
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Movie details</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card" id="showCard"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModaledit"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Movie</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form enctype="multipart/form-data">
+            <input type="hidden" id="movieid" />
+            <div class="form-group">
+              <label for="exampleInputEmail1">Movie name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="movieName1"
+                aria-describedby="emailHelp"
+                placeholder="Enter MovieName"
+              />
+              <div id="movieNamev1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Language</label>
+              <input
+                type="text"
+                class="form-control"
+                id="language1"
+                aria-describedby="emailHelp"
+                placeholder="Enter language"
+              />
+              <div id="languagev1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">ReleaseDate</label>
+              <input
+                type="date"
+                class="form-control"
+                id="releaseDate1"
+                aria-describedby="emailHelp"
+              />
+              <div id="releaseDatev1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Director</label>
+              <input
+                type="text"
+                class="form-control"
+                id="director1"
+                aria-describedby="emailHelp"
+                placeholder="Enter director"
+              />
+              <div id="directorv1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Producers</label>
+              <input
+                type="text"
+                class="form-control"
+                id="producers1"
+                aria-describedby="emailHelp"
+                placeholder="Enter producers"
+              />
+              <div id="producersv1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Casting</label>
+              <input
+                type="text"
+                class="form-control"
+                id="casting1"
+                aria-describedby="emailHelp"
+                placeholder="Enter casting"
+              />
+              <div id="castingv1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">rating</label>
+              <input
+                type="number"
+                class="form-control"
+                id="rating1"
+                aria-describedby="emailHelp"
+                placeholder="Enter rating"
+              />
+              <div id="ratingv1" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">movie image</label>
+              <input
+                type="file"
+                class="form-control"
+                id="image2"
+                aria-describedby="emailHelp"
+                placeholder="Enter rating"
+              />
+              <div id="imagev2" class="error"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Movie description</label>
+              <textarea
+                type="text"
+                class="form-control"
+                id="decription1"
+                aria-describedby="emailHelp"
+                placeholder="Enter decription"
+                rows="3"
+              ></textarea>
+              <div id="decriptionv1" class="error"></div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              onclick="event.preventDefault(); updateMovie();"
+            >
+              update
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div
+    class="modal fade"
+    id="exampleModaladd"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New Movies</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <form enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Movie name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="movieName"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter MovieName"
+                />
+                <div id="movieNamev" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Language</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="language"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter language"
+                />
+                <div id="languagev" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">ReleaseDate</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="releaseDate"
+                  aria-describedby="emailHelp"
+                />
+                <div id="releaseDatev" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Director</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="director"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter director"
+                />
+                <div id="directorv" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Producers</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="producers"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter producers"
+                />
+                <div id="producersv" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Casting</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="casting"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter casting"
+                />
+                <div id="castingv" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">rating</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="rating"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter rating"
+                />
+                <div id="ratingv" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">movie image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="image1"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter rating"
+                />
+                <div id="imagev" style="color: red"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Movie description</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  id="decription"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter decription"
+                  rows="3"
+                ></textarea>
+                <div id="decriptionv" style="color: red"></div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                onclick="event.preventDefault(); addMovie();"
+              >
+                Add
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var token = localStorage.getItem("token");
+  var headers = {};
+  headers["Authorization"] = token;
+  function show() {
+    addHtml = "";
+    var fetchNo = document.getElementById("fetchNo").value;
+    var skipNo = document.getElementById("skipNo").value;
+    if (fetchNo.length == 0 && skipNo == 0) {
+      fetchNo = 0;
+      skipNo = 0;
+    }
+    $.ajax({
+      type: "GET",
+      url:
+        "http://localhost:4005/api/movie/allmovies?skipNo=" +
+        skipNo +
+        "&fetchNo=" +
+        fetchNo,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        var i = 1;
+        for (var data of res.data) {
+          // console.log(data);
+          addHtml += `<tr>
+        <td scope="row">${i}</td>
+        <td>${data.name}</td>
+        <td><img src="${data.image}" style="width: 150px;height: 100px;" alt="movie image"/></td>
+        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+      </tr>`;
+          i++;
+        }
+        document.getElementById("showMovies").innerHTML = addHtml;
+      },
+    });
+  }
+  function getmovie(id) {
+    var addHtml1 = "";
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:4005/api/movie/moviebyid?id=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        addHtml1 += ` <img
+            class="card-img-top"
+            src="${res.data.image}"
+            style="width: 150px; height: 100px"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Movie name: ${res.data.name}</h5>
+            <p class="card-text">Description: ${res.data.decription}</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Director : ${res.data.director}</li>
+            <li class="list-group-item">Producers : ${res.data.producers}</li>
+            <li class="list-group-item">Language : ${res.data.language}</li>
+            <li class="list-group-item">Casting : ${res.data.casting}</li>
+            <li class="list-group-item">Rating : ${res.data.rating}</li>
+            <li class="list-group-item">
+              ReleaseDate : ${res.data.releaseDate.split("T")[0]}
+            </li>
+          </ul>
+
+          <a href="/newticket" class="btn btn-danger">Book tickects</a>`;
+        document.getElementById("showCard").innerHTML = addHtml1;
+      },
+    });
+  }
+  function addMovie() {
+    const name = document.getElementById("movieName").value;
+    const decription = document.getElementById("decription").value;
+    const language = document.getElementById("language").value;
+    const releaseDate = document.getElementById("releaseDate").value;
+    const rating = document.getElementById("rating").value;
+    const director = document.getElementById("director").value;
+    const producers = document.getElementById("producers").value;
+    const image = document.getElementById("image1").files[0];
+    const casting = document.getElementById("casting").value;
+    if (name.length <= 0) {
+      document.getElementById("movieNamev").innerHTML =
+        "Movie name is required";
+      return false;
+    }
+    if (decription.length <= 0) {
+      document.getElementById("decriptionv").innerHTML =
+        "Movie description is required";
+      return false;
+    }
+    if (language.length <= 0) {
+      document.getElementById("languagev").innerHTML =
+        "Movie language is required";
+      return false;
+    }
+    if (releaseDate.length <= 0) {
+      document.getElementById("releaseDatev").innerHTML =
+        "Movie releaseDate is required";
+      return false;
+    }
+    if (rating.length <= 0) {
+      document.getElementById("ratingv").innerHTML = "Movie rating is required";
+      return false;
+    }
+    if (director.length <= 0) {
+      document.getElementById("directorv").innerHTML =
+        "Movie director is required";
+      return false;
+    }
+    if (producers.length <= 0) {
+      document.getElementById("producersv").innerHTML =
+        "Movie producers is required";
+      return false;
+    }
+    if (image.length <= 0) {
+      document.getElementById("imagev").innerHTML = "Movie image is required";
+      return false;
+    }
+    if (casting.length <= 0) {
+      document.getElementById("castingv").innerHTML =
+        "Movie casting is required";
+      return false;
+    } else {
+      var formdata = new FormData();
+      formdata.append("name", name);
+      formdata.append("decription", decription);
+      formdata.append("language", language);
+      formdata.append("releaseDate", releaseDate);
+      formdata.append("rating", rating);
+      formdata.append("director", director);
+      formdata.append("producers", producers);
+      formdata.append("image", image);
+      formdata.append("casting", casting);
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:4005/api/movie/addmovie",
+        data: formdata,
+        headers: headers,
+        processData: false,
+        contentType: false,
+        success: (res) => {
+          if (res.error) {
+            alert(res.error);
+          } else {
+            window.location.reload();
+          }
+        },
+      });
+    }
+  }
+  function deletemovie(id) {
+    $.ajax({
+      type: "DELETE",
+      url: "http://localhost:4005/api/movie/deletemovie?id=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        window.location.reload();
+      },
+    });
+  }
+  function movieFilter() {
+    var name = document.getElementById("movieFilter").value;
+    addHtml = "";
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:4005/api/movie/moviesearch",
+      data: { name },
+      headers: headers,
+      dataType: "json",
+      success: (res) => {
+        var i = 1;
+        for (var data of res.data) {
+          // console.log(data);
+          addHtml += `<tr>
+            <td scope="row">${i}</td>
+        <td>${data.name}</td>
+        <td><img src="${data.image}" style="width: 150px;height: 100px;" alt="movie image"/></td>
+        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+     </tr>`;
+          i++;
+        }
+        document.getElementById("showMovies").innerHTML = addHtml;
+      },
+    });
+  }
+  function editMovie(id) {
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:4005/api/movie/moviebyid?id=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        // console.log(res);
+        document.getElementById("movieName1").value = res.data.name;
+        document.getElementById("movieid").value = res.data._id;
+        document.getElementById("decription1").value = res.data.decription;
+        document.getElementById("language1").value = res.data.language;
+        document.getElementById("releaseDate1").value =
+          res.data.releaseDate.split("T")[0];
+        document.getElementById("rating1").value = res.data.rating;
+        document.getElementById("director1").value = res.data.director;
+        document.getElementById("producers1").value = res.data.producers;
+        // document.getElementById("image2").value = res.data.image;
+        document.getElementById("casting1").value = res.data.casting;
+      },
+    });
+  }
+  function updateMovie() {
+    const name = document.getElementById("movieName1").value;
+    const id = document.getElementById("movieid").value;
+    const decription = document.getElementById("decription1").value;
+    const language = document.getElementById("language1").value;
+    const releaseDate = document.getElementById("releaseDate1").value;
+    const rating = document.getElementById("rating1").value;
+    const director = document.getElementById("director1").value;
+    const producers = document.getElementById("producers1").value;
+    const image = document.getElementById("image2");
+    const casting = document.getElementById("casting1").value;
+    console.log(image);
+    if (name.length <= 0) {
+      document.getElementById("movieNamev1").innerHTML =
+        "Movie name is required";
+      return false;
+    }
+    if (decription.length <= 0) {
+      document.getElementById("decriptionv1").innerHTML =
+        "Movie description is required";
+      return false;
+    }
+    if (language.length <= 0) {
+      document.getElementById("languagev1").innerHTML =
+        "Movie language is required";
+      return false;
+    }
+    if (releaseDate.length <= 0) {
+      document.getElementById("releaseDatev1").innerHTML =
+        "Movie releaseDate is required";
+      return false;
+    }
+    if (rating.length <= 0) {
+      document.getElementById("ratingv1").innerHTML =
+        "Movie rating is required";
+      return false;
+    }
+    if (director.length <= 0) {
+      document.getElementById("directorv1").innerHTML =
+        "Movie director is required";
+      return false;
+    }
+    if (producers.length <= 0) {
+      document.getElementById("producersv1").innerHTML =
+        "Movie producers is required";
+      return false;
+    }
+    if (image.value.length <= 0) {
+      document.getElementById("imagev2").innerHTML = "Movie image is required";
+      return false;
+    }
+    if (casting.length <= 0) {
+      document.getElementById("castingv1").innerHTML =
+        "Movie casting is required";
+      return false;
+    } else {
+      var formdata = new FormData();
+      formdata.append("name", name);
+      formdata.append("id", id);
+      formdata.append("decription", decription);
+      formdata.append("language", language);
+      formdata.append("releaseDate", releaseDate);
+      formdata.append("rating", rating);
+      formdata.append("director", director);
+      formdata.append("producers", producers);
+      formdata.append("image", image.files[0]);
+      formdata.append("casting", casting);
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:4005/api/movie/updatemovie",
+        data: formdata,
+        headers: headers,
+        processData: false,
+        contentType: false,
+        success: (res) => {
+          if (res.error) {
+            alert(res.error);
+          } else {
+            window.location.reload();
+          }
+        },
+      });
+    }
+  }
+</script>

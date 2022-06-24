@@ -1,0 +1,316 @@
+<%- include('home.ejs'); -%>
+<div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">User name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Isdeleted</th>
+        <th scope="col">Created at</th>
+        <th scope="col" colspan="2">Action</th>
+      </tr>
+    </thead>
+    <tbody id="showUsers"></tbody>
+  </table>
+</div>
+
+<div class="container">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="">Pagination</span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      id="skipNo"
+      placeholder="enter no of skip data"
+    />
+    <input
+      type="text"
+      class="form-control"
+      id="fetchNo"
+      placeholder="enter no of next data"
+    />
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div
+    class="modal fade"
+    id="exampleModaladd"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Update user details
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <form enctype="multipart/form-data">
+              <input type="hidden" id="userid" />
+              <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="usName"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter username"
+                />
+                <div id="usNamev" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                />
+                <div id="emailv" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Password</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="password"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter password"
+                />
+                <div id="passwordv" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Phone no.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter phone"
+                />
+                <div id="phonev" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">DOB</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="dob"
+                  aria-describedby="emailHelp"
+                />
+                <div id="dobv" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="formGroupExampleInput2">Gender</label>
+                <input type="radio" id="male" name="gender" value="male" /> Male
+                <input type="radio" id="female" name="gender" value="female" />
+                Female
+                <div id="genderv" class="error"></div>
+              </div>
+              <div class="form-group">
+                <label for="formGroupExampleInput2">Is deleted</label>
+                <input type="radio" id="dtrue" name="gender1" value="true" />
+                True
+                <input type="radio" id="dfalse" name="gender1" value="false" />
+                False
+                <div id="deletedv" class="error"></div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                onclick="event.preventDefault(); userUpdate();"
+              >
+                Update user
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var token = localStorage.getItem("token");
+  var headers = {};
+  headers["Authorization"] = token;
+  function show() {
+    var fetchNo = document.getElementById("fetchNo").value;
+    var skipNo = document.getElementById("skipNo").value;
+    if (fetchNo.length == 0 && skipNo == 0) {
+      fetchNo = 0;
+      skipNo = 0;
+    }
+    addHtml = "";
+    $.ajax({
+      type: "GET",
+      url:
+        "http://localhost:4005/api/user/list?skipNo=" +
+        skipNo +
+        "&fetchNo=" +
+        fetchNo,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        var i = 1;
+        for (var data of res.data) {
+          console.log(data);
+          addHtml += `<tr>
+        <td scope="row">${i}</td>
+        <td>${data.name}</td>
+        <td>${data.email}</td>
+        <td>${data.phone}</td>
+        <td>${data.gender}</td>
+        <td>${data.isDeleted}</td>
+        <td>${data.createdAt}</td>
+        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal"  data-target="#exampleModaladd" onclick='getUser(this.id)'>Edit</button></td>
+                <td><a class='btn btn-danger' id="${data._id}" onclick="deleteUser(this.id)">Delete</a></td>
+      </tr>`;
+          i++;
+        }
+        document.getElementById("showUsers").innerHTML = addHtml;
+      },
+    });
+  }
+  function getUser(id) {
+    var addHtml = "";
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:4005/api/user/getuserbyid?id=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        document.getElementById("usName").value = res.data.name;
+        document.getElementById("userid").value = res.data._id;
+        document.getElementById("email").value = res.data.email;
+        document.getElementById("phone").value = res.data.phone;
+        document.getElementById("dob").value = res.data.dob.split("T")[0];
+        // document.getElementById("dob").value = res.data.dob;
+        if (res.data.gender == "male") {
+          document.getElementById("male").checked = true;
+        } else {
+          document.getElementById("female").checked = true;
+        }
+        if (res.data.isDeleted == true) {
+          document.getElementById("dtrue").checked = true;
+        }
+        if (res.data.isDeleted == false) {
+          document.getElementById("dfalse").checked = true;
+        }
+      },
+    });
+  }
+  function userUpdate() {
+    const name = document.getElementById("usName").value;
+    const id = document.getElementById("userid").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const dob = document.getElementById("dob").value;
+    const phone = document.getElementById("phone").value;
+    var gender = "";
+    var isDeleted = "";
+    if (document.getElementById("male").checked == true) {
+      gender += "male";
+    } else if (document.getElementById("female").checked == true) {
+      gender += "female";
+    }
+    if (document.getElementById("dtrue").checked == true) {
+      isDeleted += "true";
+    } else if (document.getElementById("dfalse").checked == true) {
+      isDeleted += "false";
+    }
+    var atposition = email.indexOf("@");
+    var dotposition = email.lastIndexOf(".");
+    if (
+      atposition < 1 ||
+      dotposition < atposition + 2 ||
+      dotposition + 2 >= email.length
+    ) {
+      document.getElementById("emailv").innerHTML =
+        "Please enter a valid e-mail address ";
+      return false;
+    }
+    if (name.length < 3) {
+      document.getElementById("usName").innerHTML =
+        "name should be atleast 3 characters";
+      return false;
+    }
+    if (gender.length <= 0) {
+      document.getElementById("genderv").innerHTML = "gender is required";
+      return false;
+    }
+    if (password.length <= 0) {
+      document.getElementById("passwordv").innerHTML = "password is required";
+      return false;
+    }
+    if (dob.length <= 0) {
+      document.getElementById("dobv").innerHTML = "dob is required";
+      return false;
+    }
+    if (phone.length <= 0) {
+      document.getElementById("phonev").innerHTML = "phone is required";
+      return false;
+    } else {
+      debugger;
+      const data = { name, email, password, dob, phone, gender, isDeleted, id };
+      console.log(data);
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:4005/api/user/update",
+        data: data,
+        headers: headers,
+        dataType: "json",
+        success: (res) => {
+          // console.log(res);
+          window.location.reload();
+        },
+      });
+    }
+  }
+  function deleteUser(id) {
+    const result = confirm("Are you sure want to delete this user");
+    if (result) {
+      $.ajax({
+        type: "DELETE",
+        url: "http://localhost:4005/api/user/delete?id=" + id,
+        headers: headers,
+        // dataType: "json",
+        success: (res) => {
+          console.log(res);
+          // window.location.reload();
+        },
+      });
+    } else {
+      window.location.reload();
+    }
+  }
+</script>

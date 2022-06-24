@@ -1,0 +1,102 @@
+<%- include('header.ejs'); -%>
+
+    <div class="container">
+      <h1 style="text-align: center">Login form</h1>
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+          />
+
+          <div id="emailv" class="error"></div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Password"
+          />
+          <a href="/changepassword">Forgot password</a>
+
+          <div id="passwordv" class="error"></div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          onclick="event.preventDefault(); checkdata();"
+        >
+          Sign in
+        </button>
+        <a href="/register" class="btn btn-success">Sign up</a>
+      </form>
+    </div>
+    <script>
+      localStorage.clear();
+      function checkdata() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // validation
+        var atposition = email.indexOf("@");
+        var dotposition = email.lastIndexOf(".");
+        if (
+          atposition < 1 ||
+          dotposition < atposition + 2 ||
+          dotposition + 2 >= email.length
+        ) {
+          document.getElementById("emailv").innerHTML =
+            "Please enter a valid e-mail address ";
+          return false;
+        }
+
+        if (password.length <= 0) {
+          document.getElementById("passwordv").innerHTML =
+            "password is required";
+          return false;
+        } else {
+          var data = { email, password };
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:4005/api/notoken/checkuser",
+            data: data,
+            dataType: "json",
+            success: (res) => {
+              if (res.error) {
+                alert(res.error);
+              } else {
+                console.log(res);
+                localStorage.setItem("name", res.userName);
+                localStorage.setItem("admin", res.admin);
+                localStorage.setItem("token", res.token);
+                window.location = "/home";
+              }
+            },
+          });
+        }
+      }
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

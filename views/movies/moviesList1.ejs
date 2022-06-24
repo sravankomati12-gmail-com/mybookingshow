@@ -1,0 +1,189 @@
+<%- include('../home.ejs'); -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col m-4">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="movieFilter"
+          placeholder="Enter Movie name"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+        />
+        <div class="input-group-append">
+          <button
+            style="background-color: #d6ae7b"
+            class="btn"
+            type="button"
+            onclick="movieFilter()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">movie name</th>
+        <th scope="col">movie image</th>
+
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody id="showMovies"></tbody>
+  </table>
+</div>
+
+<div class="container">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="">Pagination</span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      id="skipNo"
+      placeholder="enter no of skip data"
+    />
+    <input
+      type="text"
+      class="form-control"
+      id="fetchNo"
+      placeholder="enter no of next data"
+    />
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Movie details</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card" id="showCard"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var token = localStorage.getItem("token");
+  var headers = {};
+  headers["Authorization"] = token;
+  function show() {
+    var fetchNo = document.getElementById("fetchNo").value;
+    var skipNo = document.getElementById("skipNo").value;
+    if (fetchNo.length == 0 && skipNo == 0) {
+      fetchNo = 0;
+      skipNo = 0;
+    }
+    addHtml = "";
+    $.ajax({
+      type: "GET",
+      url:
+        "http://localhost:4005/api/movie/allmovies?skipNo=" +
+        skipNo +
+        "&fetchNo=" +
+        fetchNo,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        var i = 1;
+        for (var data of res.data) {
+          // console.log(data);
+          addHtml += `<tr>
+        <td scope="row">${i}</td>
+        <td>${data.name}</td>
+        <td>  <img class="card-img-top" src="${data.image}" style="width: 150px;height: 100px;" alt="Card image cap"></td>
+                      <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+      </tr>`;
+          i++;
+        }
+        // <td><img src="${data.image}" style="width: 150px;height: 100px;" alt="movie image"/></td>
+        document.getElementById("showMovies").innerHTML = addHtml;
+      },
+    });
+  }
+  function getmovie(id) {
+    var addHtml1 = "";
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:4005/api/movie/moviebyid?id=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        addHtml1 += ` <img
+            class="card-img-top"
+            src="${res.data.image}"
+            style="width: 150px; height: 100px"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Movie name: ${res.data.name}</h5>
+            <p class="card-text">Description: ${res.data.decription}</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Director : ${res.data.director}</li>
+            <li class="list-group-item">Producers : ${res.data.producers}</li>
+            <li class="list-group-item">Language : ${res.data.language}</li>
+            <li class="list-group-item">Casting : ${res.data.casting}</li>
+            <li class="list-group-item">Rating : ${res.data.rating}</li>
+            <li class="list-group-item">
+              ReleaseDate : ${res.data.releaseDate.split("T")[0]}
+            </li>
+          </ul>
+
+          <a href="/newticket" class="btn btn-danger">Book tickects</a>`;
+        document.getElementById("showCard").innerHTML = addHtml1;
+      },
+    });
+  }
+  function movieFilter() {
+    var name = document.getElementById("movieFilter").value;
+    addHtml = "";
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:4005/api/movie/moviesearch",
+      data: { name },
+      headers: headers,
+      dataType: "json",
+      success: (res) => {
+        var i = 1;
+        for (var data of res.data) {
+          // console.log(data);
+          addHtml += `<tr>
+        <td scope="row">${i}</td>
+        <td>${data.name}</td>
+        <td>  <img class="card-img-top" src="${data.image}" style="width: 150px;height: 100px;" alt="Card image cap"></td>
+                      <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+      </tr>`;
+          i++;
+        }
+        document.getElementById("showMovies").innerHTML = addHtml;
+      },
+    });
+  }
+</script>

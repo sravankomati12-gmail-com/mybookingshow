@@ -1,0 +1,142 @@
+<%- include('header.ejs'); -%>
+
+<div class="container">
+  <h1 style="text-align: center">Registration form</h1>
+  <form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        aria-describedby="emailHelp"
+        placeholder="Enter Username"
+      />
+      <div id="namev" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        aria-describedby="emailHelp"
+        placeholder="Enter email"
+      />
+      <div id="emailv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="passworde"
+        placeholder="Password"
+      />
+      <div id="passwordv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Phone no.</label>
+      <input
+        type="text"
+        class="form-control"
+        id="phone"
+        aria-describedby="emailHelp"
+        placeholder="Enter phone no"
+      />
+      <div id="phonev" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">DOB</label>
+      <input
+        type="date"
+        class="form-control"
+        id="dob"
+        aria-describedby="emailHelp"
+      />
+      <div id="dobv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="formGroupExampleInput2">gender</label>
+      <input type="radio" id="male" name="gender" value="male" /> Male
+      <input type="radio" id="female" name="gender" value="female" />
+      Female
+      <div id="genderv" class="error"></div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      onclick="event.preventDefault(); checkdata();"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+<script>
+  localStorage.clear();
+  function checkdata() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("passworde").value;
+    const dob = document.getElementById("dob").value;
+    const phone = document.getElementById("phone").value;
+    var gender = "";
+    if (document.getElementById("male").checked == true) {
+      gender += "male";
+    } else if (document.getElementById("female").checked == true) {
+      gender += "female";
+    }
+    // validation
+    var atposition = email.indexOf("@");
+    var dotposition = email.lastIndexOf(".");
+    if (
+      atposition < 1 ||
+      dotposition < atposition + 2 ||
+      dotposition + 2 >= email.length
+    ) {
+      document.getElementById("emailv").innerHTML =
+        "Please enter a valid e-mail address ";
+      return false;
+    }
+    if (name.length < 3) {
+      document.getElementById("namev").innerHTML =
+        "name should be atleast 3 characters";
+      return false;
+    }
+    if (gender.length <= 0) {
+      document.getElementById("genderv").innerHTML = "gender is required";
+      return false;
+    }
+    if (password.length <= 0) {
+      document.getElementById("passwordv").innerHTML = "password is required";
+      return false;
+    }
+    if (dob.length <= 0) {
+      document.getElementById("dobv").innerHTML = "dob is required";
+      return false;
+    }
+    if (phone.length <= 0) {
+      document.getElementById("phonev").innerHTML = "phone is required";
+      return false;
+    } else {
+      var data = { name, email, password, gender, dob, phone };
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:4005/api/notoken/checkuser",
+        data: data,
+        dataType: "json",
+        success: (res) => {
+          if (res.error) {
+            alert(res.error);
+          } else {
+            console.log(res);
+            localStorage.setItem("name", res.userName);
+            localStorage.setItem("admin", res.admin);
+            localStorage.setItem("token", res.token);
+          }
+        },
+      });
+    }
+  }
+</script>

@@ -1,0 +1,78 @@
+<%- include('../home.ejs'); -%>
+<div class="container">
+  <h1 style="text-align: center">New Ticket booking</h1>
+  <form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Movie name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="mvname"
+        aria-describedby="emailHelp"
+        placeholder="Enter movie name"
+      />
+      <div id="mvnamev" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">No. seats</label>
+      <input
+        type="number"
+        class="form-control"
+        id="seats"
+        aria-describedby="emailHelp"
+        placeholder="Enter no. seats"
+      />
+      <div id="seatsv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Movie date</label>
+      <input type="date" class="form-control" id="mvdate" />
+      <div id="mvdatev" class="error"></div>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      onclick="event.preventDefault(); Addtickect();"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<script>
+  function Addtickect() {
+    const name = document.getElementById("mvname").value;
+    const seats = document.getElementById("seats").value;
+    const moviedate = document.getElementById("mvdate").value;
+    // validation
+    if (name.length <= 0) {
+      document.getElementById("mvnamev").innerHTML = "movie name is required";
+      return false;
+    }
+    if (seats.length <= 0) {
+      document.getElementById("seatsv").innerHTML = "no. seats is required";
+      return false;
+    }
+    if (moviedate.length <= 0) {
+      document.getElementById("mvdatev").innerHTML = "movieDate is required";
+      return false;
+    } else {
+      const data = { name, seats, moviedate };
+      var token = localStorage.getItem("token");
+      var headers = {};
+      addHtml = "";
+      headers["Authorization"] = token;
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:4005/api/ticket/newticket",
+        data,
+        headers: headers,
+        dataType: "json",
+        success: (res) => {
+          localStorage.setItem("ticketId", res.data._id);
+          window.location = "/newpayment";
+        },
+      });
+    }
+  }
+</script>

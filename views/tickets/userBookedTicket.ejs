@@ -1,0 +1,82 @@
+<%- include('../home.ejs'); -%>
+<div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Movie name</th>
+        <th scope="col">No. seats booked</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Movie date</th>
+        <th scope="col">Seats allocated</th>
+        <th scope="col">Booked on</th>
+      </tr>
+    </thead>
+    <tbody id="showtickets"></tbody>
+  </table>
+</div>
+
+<div class="container">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="">Pagination</span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      id="skipNo"
+      placeholder="enter no of skip data"
+    />
+    <input
+      type="text"
+      class="form-control"
+      id="fetchNo"
+      placeholder="enter no of next data"
+    />
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
+    </div>
+  </div>
+</div>
+<script>
+  var token = localStorage.getItem("token");
+  var headers = {};
+  headers["Authorization"] = token;
+  function show() {
+    var fetchNo = document.getElementById("fetchNo").value;
+    var skipNo = document.getElementById("skipNo").value;
+    if (fetchNo.length == 0 && skipNo == 0) {
+      fetchNo = 0;
+      skipNo = 0;
+    }
+    addHtml = "";
+    $.ajax({
+      type: "GET",
+      url:
+        "http://localhost:4005/api/ticket/ticketsbooked?skipNo=" +
+        skipNo +
+        "&fetchNo=" +
+        fetchNo,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        var i = 1;
+        console.log(res);
+        for (var data of res.data) {
+          console.log(data);
+          addHtml += `<tr>
+        <td scope="row">${i}</td>
+        <td>${data.movieName}</td>
+        <td>${data.seatBookedNo}</td>
+        <td>${data.amount}</td>
+        <td>${data.movieDate.split("T")[0]}</td>
+        <td>[${data.seatsAllocate}]</td>
+                <td>${data.createdAt}</td>
+             </tr>`;
+          i++;
+        }
+        document.getElementById("showtickets").innerHTML = addHtml;
+      },
+    });
+  }
+</script>

@@ -1,0 +1,164 @@
+<%- include('../home.ejs'); -%>
+<div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Acount no.</th>
+        <th scope="col">Payment opt</th>
+        <th scope="col">Currency</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Timming slot</th>
+        <th scope="col">Username</th>
+        <th scope="col">payment id</th>
+        <th scope="col">Payment at</th>
+        <th scope="col" colspan="2">Action</th>
+      </tr>
+    </thead>
+    <tbody id="showUsers"></tbody>
+  </table>
+</div>
+
+<div class="container">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="">Pagination</span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      id="skipNo"
+      placeholder="enter no of skip data"
+    />
+    <input
+      type="text"
+      class="form-control"
+      id="fetchNo"
+      placeholder="enter no of next data"
+    />
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Payment details</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <div id="getPaymentById"></div>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var token = localStorage.getItem("token");
+  var headers = {};
+  headers["Authorization"] = token;
+  function show() {
+    var fetchNo = document.getElementById("fetchNo").value;
+    var skipNo = document.getElementById("skipNo").value;
+    if (fetchNo.length == 0 && skipNo == 0) {
+      fetchNo = 0;
+      skipNo = 0;
+    }
+    addHtml = "";
+    $.ajax({
+      type: "GET",
+      url:
+        "http://localhost:4005/api/payment/paymentList?skipNo=" +
+        skipNo +
+        "&fetchNo=" +
+        fetchNo,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        var i = 1;
+        for (var data of res.data) {
+          console.log(data);
+          addHtml += `<tr>
+        <td scope="row">${i}</td>
+        <td>${data.acountNo}</td>
+        <td>${data.paymentOpt}</td>
+        <td>${data.currency}</td>
+        <td>${data.amount}</td>
+        <td>${data.timmingSlot}</td>
+        <td>${data.userName}</td>
+        <td>${data.paymentId}</td>
+        <td>${data.createdAt}</td>
+        <td><a class='btn btn-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>
+      </tr>`;
+          i++;
+        }
+        document.getElementById("showUsers").innerHTML = addHtml;
+      },
+    });
+  }
+  function getpayment(id) {
+    addHtml1 = "";
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:4005/api/payment/getpaymentbyid?id=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        addHtml1 += `
+        <li class="list-group-item">Account holder name : ${
+          res.data.userName
+        }</li>
+        <li class="list-group-item">Acont no : ${res.data.acountNo}</li>
+        <li class="list-group-item">Payment option : ${res.data.paymentOpt}</li>
+        <li class="list-group-item">Currency : ${res.data.currency}</li>
+        <li class="list-group-item">Amount : ${res.data.amount}</li>
+        <li class="list-group-item">TimmingSlot : ${res.data.timmingSlot}</li>
+        <li class="list-group-item">MovieName : ${
+          res.data.ticket.movieName
+        }</li>
+        <li class="list-group-item">SeatBookedNo : ${
+          res.data.ticket.seatBookedNo
+        }</li>
+        <li class="list-group-item">MovieDate : ${
+          res.data.ticket.movieDate.split("T")[0]
+        }</li>
+        <li class="list-group-item">SeatsAllocate : [${
+          res.data.ticket.seatsAllocate
+        }]</li>
+        <li class="list-group-item">Tickect booked by : ${
+          res.data.ticket.createdBy.name
+        }</li>
+        <li class="list-group-item">Tickect booked by : ${
+          res.data.ticket.createdAt
+        }</li>
+        `;
+        document.getElementById("getPaymentById").innerHTML = addHtml1;
+      },
+    });
+  }
+</script>

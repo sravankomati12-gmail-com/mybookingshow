@@ -1,0 +1,1020 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "openapi": "3.0.0",
+    "version": "1.0.0",
+    "title": "Movies  management system",
+    "description": "Movies management application api`s",
+    "contact": {
+      "email": "sravankomati.vision@gmail.com"
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "host": "localhost:4005",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    },
+    {
+      "name": "Movies",
+      "description": "API for movies in the system"
+    },
+    {
+      "name": "Tickets",
+      "description": "API for tickets in the system"
+    },
+    {
+      "name": "Payments",
+      "description": "API for payments in the system"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/notken/checkuser": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Create user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/user/list": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "description": "list of Users",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "skipNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "fetchNo",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/user/update": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "description": "User details update",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "vm",
+            "required": [
+              "id",
+              "name",
+              "email",
+              "password",
+              "phone",
+              "dob",
+              "gender"
+            ],
+            "in": "body",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "dob": {
+                "type": "string"
+              },
+              "gender": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/user/delete": {
+      "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "description": "Delete user details",
+        "consumes": " multipart/form-data",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Collection ID",
+            "example": "5c0728badc70ea3dec00d8e6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "String"
+            }
+          }
+        }
+      }
+    },
+    "/api/user/forgot": {
+      "post": {
+        "tags": ["Users"],
+        "description": "forgot password",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "vm",
+            "required": ["email", "newPassword"],
+            "in": "body",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "newPassword": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/notken/changepassword": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Change password",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "body",
+            "properties": {
+              "email": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/notken/verifyotp": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Otp verify",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "body",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "otp": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/movie/addmovie": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Movies"],
+        "description": "Add new Movies",
+        "consumes": "multipart/form-data",
+
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "decription",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "language",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "releaseDate",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "rating",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "director",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "producers",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "casting",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Movies"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/movie/allmovies": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Movies"],
+        "description": "List of movies",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "skipNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "fetchNo",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Movies"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/movie/moviebyid": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Movies"],
+        "description": "Get movie details by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Collection ID",
+            "example": "5c0728badc70ea3dec00d8e6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Movies"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/movie/deletemovie": {
+      "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Movies"],
+        "description": "Delete the movies by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Collection ID",
+            "example": "5c0728badc70ea3dec00d8e6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/movie/updatemovie": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Movies"],
+        "description": "Update the movie details",
+        "consumes": "multipart/form-data",
+
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "decription",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "language",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "releaseDate",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "rating",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "director",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "producers",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "casting",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/ticket/newticket": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Tickets"],
+        "description": "Add new ticket",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "vm",
+            "required": ["name", "seats", "moviedate"],
+            "in": "body",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "seats": {
+                "type": "string"
+              },
+              "moviedate": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Tickets"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/ticket/ticketList": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Tickets"],
+        "description": "List of all tickets",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "skipNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "fetchNo",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Tickets"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/ticket/ticketsbooked": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Tickets"],
+        "description": "List of tickets booked",
+        "produces": ["application/json"],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Tickets"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/ticket/ticketdelete": {
+      "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Tickets"],
+        "description": "Delete the ticket by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Collection ID",
+            "example": "5c0728badc70ea3dec00d8e6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/payment/addpayment": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Payments"],
+        "description": "Add new payment",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "name": "vm",
+            "required": [
+              "acountno",
+              "payopt",
+              "currency",
+              "timmingslot",
+              "username",
+              "ticket"
+            ],
+            "in": "body",
+            "properties": {
+              "acountno": {
+                "type": "string"
+              },
+              "payopt": {
+                "type": "string"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "timmingslot": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "ticket": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Payments"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/payment/paymentList": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Payments"],
+        "description": "List of payments transection",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "skipNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "fetchNo",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Payments"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/api/payment/getpaymentbyid": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Payments"],
+        "description": "List of payments transection by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Collection ID",
+            "example": "5c0728badc70ea3dec00d8e6"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Payments"
+            }
+          },
+          "400": {
+            "description": "Business Exception",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Users": {
+      "required": ["name", "email", "password", "phone", "dob", "gender"],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        }
+      }
+    },
+    "Movies": {
+      "required": [
+        "name",
+        "decription",
+        "language",
+        "image",
+        "releaseDate",
+        "rating",
+        "director",
+        "producer",
+        "casting"
+      ],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "decription": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "image": {
+          "type": "file"
+        },
+        "releaseDate": {
+          "type": "string"
+        },
+        "rating": {
+          "type": "string"
+        }
+      },
+      "rating": {
+        "type": "string"
+      },
+      "director": {
+        "type": "string"
+      },
+      "producer": {
+        "type": "string"
+      },
+      "casting": {
+        "type": "string"
+      }
+    },
+    "Tickets": {
+      "required": ["name", "seats", "moviedate"],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "movieName": {
+          "type": "string"
+        },
+        "seatBookedNo": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "movieDate": {
+          "type": "string"
+        },
+        "releaseDate": {
+          "type": "string"
+        },
+        "timmingSlot": {
+          "type": "string"
+        }
+      },
+      "seatsAllocate": {
+        "type": "string"
+      },
+      "createdBy": {
+        "type": "string"
+      }
+    },
+    "Payments": {
+      "required": [
+        "acountNo",
+        "paymentOpt",
+        "currency",
+        "timmingSlot",
+        "ticket",
+        "userName"
+      ],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "acountNo": {
+          "type": "string"
+        },
+        "paymentOpt": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "timmingSlot": {
+          "type": "String",
+          "enum": ["10:00", "12:00", "2:00", "4:00", "6:00", "9:00"]
+        },
+        "ticket": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      },
+      "createdAt": {
+        "type": "string"
+      }
+    }
+  }
+}

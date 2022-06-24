@@ -1,0 +1,123 @@
+<%- include('../home.ejs'); -%>
+<div class="container">
+  <h1 style="text-align: center">Payment details</h1>
+  <form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Acount no.</label>
+      <input
+        type="text"
+        class="form-control"
+        id="acountno"
+        aria-describedby="emailHelp"
+        placeholder="Enter Acount no."
+      />
+      <div id="acountnov" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Payment option</label>
+      <input
+        type="text"
+        class="form-control"
+        id="payopt"
+        aria-describedby="emailHelp"
+        placeholder="Enter payment option"
+      />
+      <div id="payoptv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Currency</label>
+      <input type="text" class="form-control" id="currency" />
+      <div id="currencyv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Timming slot</label>
+      <select class="custom-select" id="timmingslot">
+        <option selected>Choose...</option>
+        <option value="10:00">10:00 AM</option>
+        <option value="12:00">12:00 Noon</option>
+        <option value="2:00">2:00 PM</option>
+        <option value="4:00">4:00 PM</option>
+        <option value="6:00">6:00 PM</option>
+        <option value="9:00">9:00 PM</option>
+      </select>
+      <div id="timmingslotv" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Acount holder name</label>
+      <input type="text" class="form-control" id="username" />
+      <div id="usernamev" class="error"></div>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      onclick="event.preventDefault(); Addpayment();"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+<script>
+  function Addpayment() {
+    const acountno = document.getElementById("acountno").value;
+    const payopt = document.getElementById("payopt").value;
+    const currency = document.getElementById("currency").value;
+    const timmingslot = document.getElementById("timmingslot").value;
+    const username = document.getElementById("username").value;
+    var token = localStorage.getItem("token");
+    var headers = {};
+    const ticket = localStorage.getItem("ticketId");
+    headers["Authorization"] = token;
+    // validation
+    if (acountno.length <= 0) {
+      document.getElementById("acountnov").innerHTML = "acount no is required";
+      return false;
+    }
+    if (payopt.length <= 0) {
+      document.getElementById("payoptv").innerHTML =
+        "payment option is required";
+      return false;
+    }
+    if (currency.length <= 0) {
+      document.getElementById("currencyv").innerHTML = "currency is required";
+      return false;
+    }
+    if (timmingslot.length <= 0) {
+      document.getElementById("timmingslotv").innerHTML =
+        "timmingslot is required";
+      return false;
+    }
+    if (username.length <= 0) {
+      document.getElementById("usernamev").innerHTML =
+        "acount holder name is required";
+      return false;
+    } else {
+      if (ticket) {
+        const data = {
+          acountno,
+          payopt,
+          currency,
+          timmingslot,
+          username,
+          ticket,
+        };
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:4005/api/payment/addpayment",
+          data,
+          headers: headers,
+          dataType: "json",
+          success: (res) => {
+            if (res.error) {
+              alert(res.error);
+            } else {
+              window.location = "/order/" + res.details._id;
+            }
+          },
+        });
+      } else {
+        alert("please book tickect");
+        window.location = "/newtickect";
+      }
+    }
+  }
+</script>
