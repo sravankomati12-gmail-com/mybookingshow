@@ -135,9 +135,6 @@ module.exports = {
       if (valid.isEmpty(acountno)) {
         res.json({ error: "The acountno field is not empty" });
       }
-      if (valid.isEmpty(payopt)) {
-        res.json({ error: "Payopt field not be empty" });
-      }
       if (valid.isEmpty(currency)) {
         res.json({ error: "The currency field is not empty" });
       }

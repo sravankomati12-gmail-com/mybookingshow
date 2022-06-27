@@ -401,10 +401,7 @@
     $.ajax({
       type: "GET",
       url:
-        "http://localhost:4005/api/movie/allmovies?skipNo=" +
-        skipNo +
-        "&fetchNo=" +
-        fetchNo,
+        "<%=url%>api/movie/allmovies?skipNo=" + skipNo + "&fetchNo=" + fetchNo,
       headers: headers,
       // dataType: "json",
       success: (res) => {
@@ -429,7 +426,7 @@
     var addHtml1 = "";
     $.ajax({
       type: "GET",
-      url: "http://localhost:4005/api/movie/moviebyid?id=" + id,
+      url: "<%=url%>api/movie/moviebyid?id=" + id,
       headers: headers,
       // dataType: "json",
       success: (res) => {
@@ -524,7 +521,7 @@
       formdata.append("casting", casting);
       $.ajax({
         type: "POST",
-        url: "http://localhost:4005/api/movie/addmovie",
+        url: "<%=url%>api/movie/addmovie",
         data: formdata,
         headers: headers,
         processData: false,
@@ -542,7 +539,7 @@
   function deletemovie(id) {
     $.ajax({
       type: "DELETE",
-      url: "http://localhost:4005/api/movie/deletemovie?id=" + id,
+      url: "<%=url%>api/movie/deletemovie?id=" + id,
       headers: headers,
       // dataType: "json",
       success: (res) => {
@@ -555,7 +552,7 @@
     addHtml = "";
     $.ajax({
       type: "POST",
-      url: "http://localhost:4005/api/movie/moviesearch",
+      url: "<%=url%>api/movie/moviesearch",
       data: { name },
       headers: headers,
       dataType: "json",

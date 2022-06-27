@@ -39,6 +39,7 @@
       </form>
     </div>
     <script>
+      console.log(``);
       localStorage.clear();
       function checkdata() {
         const email = document.getElementById("email").value;
@@ -65,7 +66,7 @@
           var data = { email, password };
           $.ajax({
             type: "POST",
-            url: "http://localhost:4005/api/notoken/checkuser",
+            url: "<%=url%>api/notoken/checkuser",
             data: data,
             dataType: "json",
             success: (res) => {

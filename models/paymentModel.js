@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
   acountNo: String,
-  paymentOpt: String,
+  paymentOpt: { type: String, default: null },
   currency: String,
   amount: Number,
   timmingSlot: String,

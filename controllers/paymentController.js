@@ -62,7 +62,11 @@ module.exports = {
   },
   updatePaymentDetails: async (req, res) => {
     const { id, paymentId } = req.body;
-    await paymentModel.findByIdAndUpdate(id, { paymentId });
+    const data = await razorPayInstance.payments.fetch(paymentId);
+    await paymentModel.findByIdAndUpdate(id, {
+      paymentId,
+      paymentOpt: data.method,
+    });
     res.json({ message: "payment is done" });
   },
 };
