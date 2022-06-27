@@ -64,7 +64,7 @@
       headers["Authorization"] = token;
       $.ajax({
         type: "POST",
-        url: "http://localhost:4005/api/ticket/newticket",
+        url: "<% url%>api/ticket/newticket",
         data,
         headers: headers,
         dataType: "json",

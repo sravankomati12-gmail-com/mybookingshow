@@ -174,7 +174,7 @@
     $.ajax({
       type: "GET",
       url:
-        "http://localhost:4005/api/user/list?skipNo=" +
+        "<% url%>api/user/list?skipNo=" +
         skipNo +
         "&fetchNo=" +
         fetchNo,
@@ -205,7 +205,7 @@
     var addHtml = "";
     $.ajax({
       type: "GET",
-      url: "http://localhost:4005/api/user/getuserbyid?id=" + id,
+      url: "<% url%>api/user/getuserbyid?id=" + id,
       headers: headers,
       // dataType: "json",
       success: (res) => {
@@ -285,7 +285,7 @@
       console.log(data);
       $.ajax({
         type: "POST",
-        url: "http://localhost:4005/api/user/update",
+        url: "<% url%>api/user/update",
         data: data,
         headers: headers,
         dataType: "json",
@@ -301,7 +301,7 @@
     if (result) {
       $.ajax({
         type: "DELETE",
-        url: "http://localhost:4005/api/user/delete?id=" + id,
+        url: "<% url%>api/user/delete?id=" + id,
         headers: headers,
         // dataType: "json",
         success: (res) => {

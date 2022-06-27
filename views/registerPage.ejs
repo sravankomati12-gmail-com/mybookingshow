@@ -123,7 +123,7 @@
       var data = { name, email, password, gender, dob, phone };
       $.ajax({
         type: "POST",
-        url: "http://localhost:4005/api/notoken/checkuser",
+        url: "<% url%>api/notoken/checkuser",
         data: data,
         dataType: "json",
         success: (res) => {

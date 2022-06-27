@@ -93,7 +93,7 @@
     $.ajax({
       type: "GET",
       url:
-        "http://localhost:4005/api/payment/paymentList?skipNo=" +
+        "<% url%>api/payment/paymentList?skipNo=" +
         skipNo +
         "&fetchNo=" +
         fetchNo,
@@ -125,7 +125,7 @@
     addHtml1 = "";
     $.ajax({
       type: "GET",
-      url: "http://localhost:4005/api/payment/getpaymentbyid?id=" + id,
+      url: "<% url%>api/payment/getpaymentbyid?id=" + id,
       headers: headers,
       // dataType: "json",
       success: (res) => {
