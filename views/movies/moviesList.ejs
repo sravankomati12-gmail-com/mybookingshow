@@ -407,14 +407,22 @@
       success: (res) => {
         var i = 1;
         for (var data of res.data) {
-          // console.log(data);
+          console.log();
           addHtml += `<tr>
         <td scope="row">${i}</td>
         <td>${data.name}</td>
-        <td><img src="${data.image}" style="width: 150px;height: 100px;" alt="movie image"/></td>
-        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
-                <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
-                <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+        <td><img src="${
+          data.image.split("4005/")[1]
+        }" style="width: 150px;height: 100px;" alt="movie image"/></td>
+        <td><button class='btn btn-warning' id="${
+          data._id
+        }" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                <td><a class='btn btn-danger' id="${
+                  data._id
+                }" onclick="deletemovie(this.id)">Delete</a></td>
+                <td><a class='btn btn-info' id="${
+                  data._id
+                }" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
       </tr>`;
           i++;
         }
@@ -432,7 +440,7 @@
       success: (res) => {
         addHtml1 += ` <img
             class="card-img-top"
-            src="${res.data.image}"
+            src="${data.image.split("4005/")[1]}"
             style="width: 150px; height: 100px"
             alt="Card image cap"
           />
