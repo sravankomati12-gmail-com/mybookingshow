@@ -24,9 +24,10 @@
           id: "<%= Id%>",
           paymentId: response.razorpay_payment_id,
         };
+
         $.ajax({
           type: "POST",
-          url: "<% url%>api/payment/paymentupdate",
+          url: "<%= path%>api/payment/paymentupdate",
           data,
           headers: headers,
           dataType: "json",

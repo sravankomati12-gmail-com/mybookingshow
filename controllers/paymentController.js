@@ -44,10 +44,10 @@ module.exports = {
   getAllPaymentList: async (req, res) => {
     const { skipNo, fetchNo } = req.query;
     if (
-      (skipNo == "" && fetchNo == "") ||
+      (skipNo == 0 && fetchNo == 0) ||
       (skipNo === undefined && fetchNo === undefined)
     ) {
-      const data = await paymentModel.find().skip(0).limit(10);
+      const data = await paymentModel.find().skip(skipNo).limit(10);
       res.json({ message: "List of payments", data });
     } else {
       const data = await paymentModel.find().skip(skipNo).limit(fetchNo);

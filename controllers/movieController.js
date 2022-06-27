@@ -48,7 +48,7 @@ module.exports = {
     try {
       const { skipNo, fetchNo } = req.query;
       if (
-        (skipNo == "" && fetchNo == "") ||
+        (skipNo == 0 && fetchNo == 0) ||
         (skipNo === undefined && fetchNo === undefined)
       ) {
         const data = await movieModel

@@ -48,7 +48,7 @@ frontendRoute.get("/order/:id", async (req, res) => {
     order: data.paymentId,
     Id: data._id,
     amount: Number(data.amount) * 100,
-    url,
+    path: process.env.api_url,
   });
 });
 
