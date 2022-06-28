@@ -9,5 +9,6 @@ movieRouter.get("/allmovies", movieControl.getAllMovie);
 movieRouter.get("/moviebyid", movieControl.getMovieById);
 movieRouter.delete("/deletemovie", movieControl.deleteMovie);
 movieRouter.post("/moviesearch", movieControl.searchMovie);
+movieRouter.post("/upload", movieControl.uploadExcelSheet);
 
 module.exports = movieRouter;

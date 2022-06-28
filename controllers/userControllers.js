@@ -82,18 +82,18 @@ module.exports = {
   },
   userList: async (req, res) => {
     try {
-      const { skipNo, fetchNo } = req.query;
-
-      if (
-        (skipNo == 0 && fetchNo == 0) ||
-        (skipNo === undefined && fetchNo === undefined)
-      ) {
-        const data = await userModel.find().skip(0).limit(10);
-        res.json({ message: "List of users", data });
-      } else {
-        const data = await userModel.find().skip(skipNo).limit(fetchNo);
-        res.json({ message: "List of users", data });
-      }
+      const { page = 1 } = req.query;
+      const data = await userModel
+        .find()
+        .skip(10 * page - 10)
+        .limit(10);
+      const count = await userModel.count();
+      res.json({
+        message: "List of users",
+        data,
+        current: page,
+        pages: Math.ceil(count / 10),
+      });
     } catch (error) {
       res.json({ message: error.message });
     }

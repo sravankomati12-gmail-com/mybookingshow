@@ -1,5 +1,5 @@
 <%- include('../home.ejs'); -%>
-<div class="container">
+<div class="">
   <div class="row">
     <div class="col">
       <button
@@ -10,6 +10,10 @@
         Add movies
       </button>
     </div>
+    <div class="col">
+      <a class="btn btn-primary m-4" href="/export">Export</a>
+    </div>
+
     <div class="col m-4">
       <div class="input-group mb-3">
         <input
@@ -32,6 +36,28 @@
         </div>
       </div>
     </div>
+    <div class="col m-4">
+      <div class="input-group mb-3">
+        <input
+          type="file"
+          class="form-control"
+          id="fileimport"
+          placeholder="Enter Movie name"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+        />
+        <div class="input-group-append">
+          <button
+            style="background-color: #d6ae7b"
+            class="btn"
+            type="button"
+            onclick="importfile()"
+          >
+            import
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -39,9 +65,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">No.</th>
         <th scope="col">Movie name</th>
-        <th scope="col">Movie image</th>
         <th scope="col">Action</th>
         <th scope="col">Action</th>
         <th scope="col">Action</th>
@@ -49,29 +73,6 @@
     </thead>
     <tbody id="showMovies"></tbody>
   </table>
-</div>
-
-<div class="container">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="">Pagination</span>
-    </div>
-    <input
-      type="text"
-      class="form-control"
-      id="skipNo"
-      placeholder="enter no of skip data"
-    />
-    <input
-      type="text"
-      class="form-control"
-      id="fetchNo"
-      placeholder="enter no of next data"
-    />
-    <div class="input-group-append">
-      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
-    </div>
-  </div>
 </div>
 
 <div>
@@ -386,47 +387,62 @@
     </div>
   </div>
 </div>
+<div id="pagination"></div>
 <script>
   var token = localStorage.getItem("token");
   var headers = {};
   headers["Authorization"] = token;
   function show() {
     addHtml = "";
-    var fetchNo = document.getElementById("fetchNo").value;
-    var skipNo = document.getElementById("skipNo").value;
-    if (fetchNo.length == 0 && skipNo == 0) {
-      fetchNo = 0;
-      skipNo = 0;
-    }
+    addHtmlPagination = "";
     $.ajax({
       type: "GET",
-      url:
-        "<% url%>api/movie/allmovies?skipNo=" + skipNo + "&fetchNo=" + fetchNo,
+      url: "<% url%>api/movie/allmovies?page=1",
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        var i = 1;
         for (var data of res.data) {
-          console.log();
           addHtml += `<tr>
-        <td scope="row">${i}</td>
-        <td>${data.name}</td>
-        <td><img src="${
-          data.image.split("4005/")[1]
-        }" style="width: 150px;height: 100px;" alt="movie image"/></td>
-        <td><button class='btn btn-warning' id="${
-          data._id
-        }" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
-                <td><a class='btn btn-danger' id="${
-                  data._id
-                }" onclick="deletemovie(this.id)">Delete</a></td>
-                <td><a class='btn btn-info' id="${
-                  data._id
-                }" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+               <td>${data.name}</td>
+        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
       </tr>`;
-          i++;
         }
+        if (res.pages > 0) {
+          addHtmlPagination += `<ul class="pagination text-center">`;
+          if (res.current == 1) {
+            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+          } else {
+            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+          }
+          var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
+          if (count !== 1) {
+            addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+          }
+          for (
+            ;
+            count < Number(res.current) + 4 && count <= res.pages;
+            count++
+          ) {
+            if (count == res.current) {
+              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+            } else {
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+            }
+            if (count == Number(res.current) + 4 && count < res.pages) {
+              addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+            }
+          }
+          if (res.current == res.pages) {
+            addHtmlPagination += `<li class="disabled"><button>Last</button></li>`;
+          } else {
+            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">Last</button></li>`;
+          }
+        }
+        addHtmlPagination += "</ul>";
         document.getElementById("showMovies").innerHTML = addHtml;
+        document.getElementById("pagination").innerHTML = addHtmlPagination;
       },
     });
   }
@@ -438,12 +454,23 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        addHtml1 += ` <img
+        const check = res.data.image;
+        if (typeof check == "undefined") {
+          addHtml1 += ` <img
             class="card-img-top"
-            src="${res.data.image.split("4005/")[1]}"
+            src=""
             style="width: 150px; height: 100px"
             alt="Card image cap"
-          />
+          />`;
+        } else {
+          addHtml1 += ` <img
+            class="card-img-top"
+            src="${check.split("4005/")[1]}"
+            style="width: 150px; height: 100px"
+            alt="Card image cap"
+          />`;
+        }
+        addHtml1 += `
           <div class="card-body">
             <h5 class="card-title">Movie name: ${res.data.name}</h5>
             <p class="card-text">Description: ${res.data.decription}</p>
@@ -565,18 +592,16 @@
       headers: headers,
       dataType: "json",
       success: (res) => {
-        var i = 1;
         for (var data of res.data) {
           // console.log(data);
           addHtml += `<tr>
-            <td scope="row">${i}</td>
+
         <td>${data.name}</td>
-        <td><img src="${data.image}" style="width: 150px;height: 100px;" alt="movie image"/></td>
+
         <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
                 <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
                 <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
      </tr>`;
-          i++;
         }
         document.getElementById("showMovies").innerHTML = addHtml;
       },
@@ -687,5 +712,53 @@
         },
       });
     }
+  }
+  function importfile() {
+    const file = document.getElementById("fileimport").files[0];
+    if (file.length <= 0) {
+      alert("Movie file is required");
+      return false;
+    } else {
+      var formdata = new FormData();
+      formdata.append("sheet", file);
+      $.ajax({
+        type: "POST",
+        url: "<% url%>api/movie/upload",
+        data: formdata,
+        headers: headers,
+        processData: false,
+        contentType: false,
+        success: (res) => {
+          console.log(res);
+          if (res.error) {
+            alert(`${res.error}`);
+          } else {
+            window.location.reload();
+          }
+        },
+      });
+    }
+  }
+  function getPagination(id) {
+    addHtml = "";
+    $.ajax({
+      type: "GET",
+      url: "<% url%>api/movie/allmovies?page=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        console.log(res);
+        for (var data of res.data) {
+          console.log();
+          addHtml += `<tr>
+               <td>${data.name}</td>
+        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+      </tr>`;
+        }
+        document.getElementById("showMovies").innerHTML = addHtml;
+      },
+    });
   }
 </script>

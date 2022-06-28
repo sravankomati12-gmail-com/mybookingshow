@@ -1,5 +1,8 @@
 const express = require("express");
 const paymentModel = require("../models/paymentModel");
+const moviesInfo = require("../models/movieModel");
+const pdf = require("html-pdf");
+const fs = require("fs");
 const frontendRoute = express.Router();
 require("dotenv").config();
 const url = { url: process.env.api_url };
@@ -51,5 +54,31 @@ frontendRoute.get("/order/:id", async (req, res) => {
     path: process.env.api_url,
   });
 });
+frontendRoute.get("/export", async (req, res) => {
+  let options = {
+    height: "11.25in",
+    width: "8.5in",
+    header: {
+      height: "20mm",
+    },
+    footer: {
+      height: "20mm",
+    },
+  };
+  const data = await moviesInfo.find();
 
+  res.render("pdfconvert", { data: data }, (err1, html) => {
+    const path = Date.now() + "_report.pdf";
+    pdf
+      .create(html, options)
+      .toFile("./export/" + path, function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        var dataFile = fs.readFileSync("./export/" + path);
+        res.header("Content-Type", "application/pdf");
+        res.send(dataFile);
+      });
+  });
+});
 module.exports = frontendRoute;

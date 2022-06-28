@@ -3,7 +3,6 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">No.</th>
         <th scope="col">Acount no.</th>
         <th scope="col">Payment opt</th>
         <th scope="col">Currency</th>
@@ -19,28 +18,6 @@
   </table>
 </div>
 
-<div class="container">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="">Pagination</span>
-    </div>
-    <input
-      type="text"
-      class="form-control"
-      id="skipNo"
-      placeholder="enter no of skip data"
-    />
-    <input
-      type="text"
-      class="form-control"
-      id="fetchNo"
-      placeholder="enter no of next data"
-    />
-    <div class="input-group-append">
-      <button class="btn btn-outline-primary" onclick="show()">Submit</button>
-    </div>
-  </div>
-</div>
 <!-- Modal -->
 <div
   class="modal fade"
@@ -78,33 +55,24 @@
     </div>
   </div>
 </div>
+<div id="pagination"></div>
 <script>
   var token = localStorage.getItem("token");
   var headers = {};
   headers["Authorization"] = token;
   function show() {
-    var fetchNo = document.getElementById("fetchNo").value;
-    var skipNo = document.getElementById("skipNo").value;
-    if (fetchNo.length == 0 && skipNo == 0) {
-      fetchNo = 0;
-      skipNo = 0;
-    }
     addHtml = "";
+    addHtmlPagination = "";
     $.ajax({
       type: "GET",
-      url:
-        "<% url%>api/payment/paymentList?skipNo=" +
-        skipNo +
-        "&fetchNo=" +
-        fetchNo,
+      url: "<% url%>api/payment/paymentList?pages=1",
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        var i = 1;
         for (var data of res.data) {
-          console.log(data);
+          // console.log(data);
           addHtml += `<tr>
-        <td scope="row">${i}</td>
+        
         <td>${data.acountNo}</td>
         <td>${data.paymentOpt}</td>
         <td>${data.currency}</td>
@@ -115,9 +83,41 @@
         <td>${data.createdAt}</td>
         <td><a class='btn btn-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>
       </tr>`;
-          i++;
         }
+        if (res.pages > 0) {
+          addHtmlPagination += `<ul class="pagination text-center">`;
+          if (res.current == 1) {
+            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+          } else {
+            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+          }
+          var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
+          if (count !== 1) {
+            addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+          }
+          for (
+            ;
+            count < Number(res.current) + 4 && count <= res.pages;
+            count++
+          ) {
+            if (count == res.current) {
+              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+            } else {
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+            }
+            if (count == Number(res.current) + 4 && count < res.pages) {
+              addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+            }
+          }
+          if (res.current == res.pages) {
+            addHtmlPagination += `<li class="disabled"><button>Last</button></li>`;
+          } else {
+            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">Last</button></li>`;
+          }
+        }
+        addHtmlPagination += "</ul>";
         document.getElementById("showUsers").innerHTML = addHtml;
+        document.getElementById("pagination").innerHTML = addHtmlPagination;
       },
     });
   }
@@ -158,6 +158,33 @@
         }</li>
         `;
         document.getElementById("getPaymentById").innerHTML = addHtml1;
+      },
+    });
+  }
+  function getPagination(id) {
+    addHtml = "";
+    $.ajax({
+      type: "GET",
+      url: "<% url%>api/payment/paymentList?page=" + id,
+      headers: headers,
+      // dataType: "json",
+      success: (res) => {
+        for (var data of res.data) {
+          // console.log(data);
+          addHtml += `<tr>
+        
+        <td>${data.acountNo}</td>
+        <td>${data.paymentOpt}</td>
+        <td>${data.currency}</td>
+        <td>${data.amount}</td>
+        <td>${data.timmingSlot}</td>
+        <td>${data.userName}</td>
+        <td>${data.paymentId}</td>
+        <td>${data.createdAt}</td>
+        <td><a class='btn btn-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>
+      </tr>`;
+        }
+        document.getElementById("showUsers").innerHTML = addHtml;
       },
     });
   }

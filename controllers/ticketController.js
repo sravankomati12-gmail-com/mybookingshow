@@ -39,48 +39,38 @@ module.exports = {
   },
   ticketbookedList: async (req, res) => {
     try {
-      const { skipNo, fetchNo } = req.query;
-      if (
-        (skipNo == 0 && fetchNo == 0) ||
-        (skipNo === undefined && fetchNo === undefined)
-      ) {
-        const data = await ticketModel
-          .find({ createdBy: req.user._id })
-          .skip(0)
-          .limit(10);
-        res.json({ message: "List of  tickets you booked", data });
-      } else {
-        const data = await ticketModel
-          .find({ createdBy: req.user._id })
-          .skip(skipNo)
-          .limit(fetchNo);
-        res.json({ message: "list of  tickets you booked", data });
-      }
+      const { page = 1 } = req.query;
+      const data = await ticketModel
+        .find({ createdBy: req.user._id })
+        .populate("createdBy")
+        .skip(10 * page - 10)
+        .limit(10);
+      const count = await ticketModel.count();
+      res.json({
+        message: "list of  tickets you booked",
+        data,
+        current: page,
+        pages: Math.ceil(count / 10),
+      });
     } catch (error) {
       res.json({ message: error.message });
     }
   },
   ticketList: async (req, res) => {
     try {
-      const { skipNo, fetchNo } = req.query;
-      if (
-        (skipNo == 0 && fetchNo == 0) ||
-        (skipNo === undefined && fetchNo === undefined)
-      ) {
-        const data = await ticketModel
-          .find()
-          .populate("createdBy")
-          .skip(0)
-          .limit(10);
-        res.json({ message: "List of  tickets  user booked", data });
-      } else {
-        const data = await ticketModel
-          .find()
-          .populate("createdBy")
-          .skip(skipNo)
-          .limit(fetchNo);
-        res.json({ message: "List of  tickets  user booked", data });
-      }
+      const { page = 1 } = req.query;
+      const data = await ticketModel
+        .find()
+        .populate("createdBy")
+        .skip(10 * page - 10)
+        .limit(10);
+      const count = await ticketModel.count();
+      res.json({
+        message: "List of  tickets  user booked",
+        data,
+        current: page,
+        pages: Math.ceil(count / 10),
+      });
     } catch (error) {
       res.json({ message: error.message });
     }
