@@ -3,6 +3,9 @@ const paymentModel = require("../models/paymentModel");
 const moviesInfo = require("../models/movieModel");
 const pdf = require("html-pdf");
 const fs = require("fs");
+const qrcode = require("qrcode");
+const { verify } = require("jsonwebtoken");
+const userModel = require("../models/userModel");
 const frontendRoute = express.Router();
 require("dotenv").config();
 const url = { url: process.env.api_url };
@@ -80,5 +83,21 @@ frontendRoute.get("/export", async (req, res) => {
         res.send(dataFile);
       });
   });
+});
+frontendRoute.get("/qrcode", async (req, res) => {
+  const id = verify(req.query.data, process.env.secretKey);
+  const data = await userModel.findById(id.userid);
+  const present = {
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    gender: data.gender,
+    isAdmin: data.isAdmin,
+    dob: String(data.dob).split("T")[0],
+  };
+
+  let img = await qrcode.toDataURL(JSON.stringify(present));
+
+  res.render("qrCode", { img });
 });
 module.exports = frontendRoute;

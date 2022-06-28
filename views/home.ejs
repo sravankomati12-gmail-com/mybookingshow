@@ -1,7 +1,7 @@
 <%- include('header.ejs'); -%>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-info">
-        <a class="navbar-brand" href="#">My booking</a>
+        <a class="navbar-brand" href="/home">My booking</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,13 +12,15 @@
 <script>
     const userName=localStorage.getItem("name");
     const isAdmin=localStorage.getItem("admin");
+    const token12=localStorage.getItem("token").split(" ")[1];
+    
     var addHtml=""
     if(userName)
     {
         addHtml=`<div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="/home">welocome to ${userName} <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/qrcode?data=${token12}">welocome to ${userName} <span class="sr-only">(current)</span></a>
             </li>`;
           
             if(isAdmin=="true")
