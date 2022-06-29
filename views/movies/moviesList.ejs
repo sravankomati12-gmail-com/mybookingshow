@@ -715,8 +715,7 @@
   }
   function importfile() {
     const file = document.getElementById("fileimport").files[0];
-    console.log(file);
-    // debugger;
+
     if (file == undefined) {
       alert("Movie file is required");
       return false;
@@ -725,7 +724,7 @@
       formdata.append("sheet", file);
       $.ajax({
         type: "POST",
-        url: "/api/notoken/upload",
+        url: "/api/movie/upload",
         data: formdata,
         headers: headers,
         processData: false,
