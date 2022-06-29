@@ -725,7 +725,7 @@
       formdata.append("sheet", file);
       $.ajax({
         type: "POST",
-        url: "/upload",
+        url: "/api/notoken/upload",
         data: formdata,
         headers: headers,
         processData: false,
