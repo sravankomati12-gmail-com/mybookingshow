@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const connect =
-  process.env.dbConnect ||
-  "mongodb+srv://sravan_vision:Sravan%40123@cluster0.vr3xu.mongodb.net/movies?retryWrites=true&w=majority";
+const connect = process.env.dbConnect;
 mongoose.connect(connect, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
