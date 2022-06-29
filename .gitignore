@@ -1,4 +1,5 @@
-/node_modules
-/export
-/sheets
-.env
+node_modules
+public
+export
+sheets
+.env.local
