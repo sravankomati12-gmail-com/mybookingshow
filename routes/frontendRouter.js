@@ -74,7 +74,7 @@ frontendRoute.get("/export", async (req, res) => {
     const path = Date.now() + "_report.pdf";
     pdf
       .create(html, options)
-      .toFile("./export/" + path, function (err, result) {
+      .toFile("./public/export/" + path, function (err, result) {
         if (err) {
           console.log(err);
         }
