@@ -70,19 +70,20 @@ frontendRoute.get("/export", async (req, res) => {
   };
   const data = await moviesInfo.find();
 
-  res.render("pdfconvert", { data: data }, (err1, html) => {
-    const path = Date.now() + "_report.pdf";
-    pdf
-      .create(html, options)
-      .toFile("./public/export/" + path, function (err, result) {
-        if (err) {
-          console.log(err);
-        }
-        var dataFile = fs.readFileSync("./public/export/" + path);
-        res.header("Content-Type", "application/pdf");
-        res.send(dataFile);
-      });
-  });
+  res.render("pdfconvert", { data: data });
+  // res.render("pdfconvert", { data: data }, (err1, html) => {
+  //   const path = Date.now() + "_report.pdf";
+  //   pdf
+  //     .create(html, options)
+  //     .toFile("./public/export/" + path, function (err, result) {
+  //       if (err) {
+  //         console.log(err);
+  //       }
+  //       var dataFile = fs.readFileSync("./public/export/" + path);
+  //       res.header("Content-Type", "application/pdf");
+  //       res.send(dataFile);
+  //     });
+  // });
 });
 frontendRoute.get("/qrcode", async (req, res) => {
   const id = verify(req.query.data, process.env.secretKey);
