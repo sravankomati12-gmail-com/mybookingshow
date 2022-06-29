@@ -78,7 +78,7 @@ frontendRoute.get("/export", async (req, res) => {
         if (err) {
           console.log(err);
         }
-        var dataFile = fs.readFileSync("./export/" + path);
+        var dataFile = fs.readFileSync("./public/export/" + path);
         res.header("Content-Type", "application/pdf");
         res.send(dataFile);
       });
