@@ -41,7 +41,7 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/api/notken/checkuser": {
+    "/api/notoken/checkuser": {
       "post": {
         "tags": ["Users"],
         "description": "Create user",
@@ -244,7 +244,7 @@
         }
       }
     },
-    "/api/notken/changepassword": {
+    "/api/notoken/changepassword": {
       "post": {
         "tags": ["Users"],
         "description": "Change password",
@@ -276,7 +276,7 @@
         }
       }
     },
-    "/api/notken/verifyotp": {
+    "/api/notoken/verifyotp": {
       "post": {
         "tags": ["Users"],
         "description": "Otp verify",
@@ -603,10 +603,13 @@
         "parameters": [
           {
             "name": "vm",
-            "required": ["name", "seats", "moviedate"],
+            "required": ["name", "seats", "moviedate", "timmingslot"],
             "in": "body",
             "properties": {
               "name": {
+                "type": "string"
+              },
+              "timmingslot": {
                 "type": "string"
               },
               "seats": {
@@ -750,7 +753,6 @@
               "acountno",
               "payopt",
               "currency",
-              "timmingslot",
               "username",
               "ticket"
             ],
@@ -765,9 +767,7 @@
               "currency": {
                 "type": "string"
               },
-              "timmingslot": {
-                "type": "string"
-              },
+
               "username": {
                 "type": "string"
               },

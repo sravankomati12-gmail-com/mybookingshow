@@ -6,10 +6,7 @@ const ticketSchema = new mongoose.Schema({
   seatBookedNo: { type: Number, max: 30 },
   amount: Number,
   movieDate: Date,
-  timmingSlot: {
-    type: String,
-    enum: ["10:00", "12:00", "2:00", "4:00", "6:00", "9:00"],
-  },
+  timmingSlot: String,
   seatsAllocate: [String],
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "userInfo" },
 });

@@ -128,8 +128,7 @@ module.exports = {
     }
   },
   paymentValidation: async (req, res, next) => {
-    const { acountno, payopt, currency, timmingslot, username, ticket } =
-      req.body;
+    const { acountno, currency, username, ticket } = req.body;
 
     try {
       if (valid.isEmpty(acountno)) {
@@ -137,9 +136,6 @@ module.exports = {
       }
       if (valid.isEmpty(currency)) {
         res.json({ error: "The currency field is not empty" });
-      }
-      if (valid.isEmpty(timmingslot)) {
-        res.json({ error: "The timmingslot field is not empty" });
       }
       if (valid.isEmpty(username)) {
         res.json({ error: "The username field is not empty" });

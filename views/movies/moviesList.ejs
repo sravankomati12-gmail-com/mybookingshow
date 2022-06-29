@@ -715,7 +715,7 @@
   }
   function importfile() {
     const file = document.getElementById("fileimport").files[0];
-    if (file.length <= 0) {
+    if (file == undefined) {
       alert("Movie file is required");
       return false;
     } else {

@@ -7,7 +7,6 @@
         <th scope="col">Payment opt</th>
         <th scope="col">Currency</th>
         <th scope="col">Amount</th>
-        <th scope="col">Timming slot</th>
         <th scope="col">Username</th>
         <th scope="col">payment id</th>
         <th scope="col">Payment at</th>
@@ -77,8 +76,7 @@
         <td>${data.paymentOpt}</td>
         <td>${data.currency}</td>
         <td>${data.amount}</td>
-        <td>${data.timmingSlot}</td>
-        <td>${data.userName}</td>
+       <td>${data.userName}</td>
         <td>${data.paymentId}</td>
         <td>${data.createdAt}</td>
         <td><a class='btn btn-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>
@@ -137,7 +135,9 @@
         <li class="list-group-item">Payment option : ${res.data.paymentOpt}</li>
         <li class="list-group-item">Currency : ${res.data.currency}</li>
         <li class="list-group-item">Amount : ${res.data.amount}</li>
-        <li class="list-group-item">TimmingSlot : ${res.data.timmingSlot}</li>
+        <li class="list-group-item">TimmingSlot : ${
+          res.data.ticket.timmingSlot
+        }</li>
         <li class="list-group-item">MovieName : ${
           res.data.ticket.movieName
         }</li>
@@ -177,8 +177,7 @@
         <td>${data.paymentOpt}</td>
         <td>${data.currency}</td>
         <td>${data.amount}</td>
-        <td>${data.timmingSlot}</td>
-        <td>${data.userName}</td>
+                <td>${data.userName}</td>
         <td>${data.paymentId}</td>
         <td>${data.createdAt}</td>
         <td><a class='btn btn-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>

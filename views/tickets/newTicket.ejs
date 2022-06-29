@@ -25,6 +25,19 @@
       <div id="seatsv" class="error"></div>
     </div>
     <div class="form-group">
+      <label for="exampleInputPassword1">Timming slot</label>
+      <select class="custom-select" id="timmingslot">
+        <option selected>Choose...</option>
+        <option value="10:00 AM">10:00 AM</option>
+        <option value="12:00 Noon">12:00 Noon</option>
+        <option value="2:00 PM">2:00 PM</option>
+        <option value="4:00 PM">4:00 PM</option>
+        <option value="6:00 PM">6:00 PM</option>
+        <option value="9:00 PM">9:00 PM</option>
+      </select>
+      <div id="timmingslotv" class="error"></div>
+    </div>
+    <div class="form-group">
       <label for="exampleInputPassword1">Movie date</label>
       <input type="date" class="form-control" id="mvdate" />
       <div id="mvdatev" class="error"></div>
@@ -43,6 +56,7 @@
   function Addtickect() {
     const name = document.getElementById("mvname").value;
     const seats = document.getElementById("seats").value;
+    const timmingslot = document.getElementById("timmingslot").value;
     const moviedate = document.getElementById("mvdate").value;
     // validation
     if (name.length <= 0) {
@@ -56,8 +70,13 @@
     if (moviedate.length <= 0) {
       document.getElementById("mvdatev").innerHTML = "movieDate is required";
       return false;
+    }
+    if (timmingslot.length <= 0) {
+      document.getElementById("timmingslotv").innerHTML =
+        "timmingslot is required";
+      return false;
     } else {
-      const data = { name, seats, moviedate };
+      const data = { name, seats, moviedate, timmingslot };
       var token = localStorage.getItem("token");
       var headers = {};
       addHtml = "";

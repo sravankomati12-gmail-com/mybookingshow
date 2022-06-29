@@ -20,19 +20,6 @@
       <div id="currencyv" class="error"></div>
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Timming slot</label>
-      <select class="custom-select" id="timmingslot">
-        <option selected>Choose...</option>
-        <option value="10:00">10:00 AM</option>
-        <option value="12:00">12:00 Noon</option>
-        <option value="2:00">2:00 PM</option>
-        <option value="4:00">4:00 PM</option>
-        <option value="6:00">6:00 PM</option>
-        <option value="9:00">9:00 PM</option>
-      </select>
-      <div id="timmingslotv" class="error"></div>
-    </div>
-    <div class="form-group">
       <label for="exampleInputPassword1">Acount holder name</label>
       <input type="text" class="form-control" id="username" />
       <div id="usernamev" class="error"></div>
@@ -49,9 +36,7 @@
 <script>
   function Addpayment() {
     const acountno = document.getElementById("acountno").value;
-
     const currency = document.getElementById("currency").value;
-    const timmingslot = document.getElementById("timmingslot").value;
     const username = document.getElementById("username").value;
     var token = localStorage.getItem("token");
     var headers = {};
@@ -67,11 +52,7 @@
       document.getElementById("currencyv").innerHTML = "currency is required";
       return false;
     }
-    if (timmingslot.length <= 0) {
-      document.getElementById("timmingslotv").innerHTML =
-        "timmingslot is required";
-      return false;
-    }
+
     if (username.length <= 0) {
       document.getElementById("usernamev").innerHTML =
         "acount holder name is required";
@@ -80,9 +61,7 @@
       if (ticket) {
         const data = {
           acountno,
-
           currency,
-          timmingslot,
           username,
           ticket,
         };

@@ -5,7 +5,8 @@ let totalSeats = 100;
 module.exports = {
   newTicket: async (req, res) => {
     try {
-      const { name, seats, moviedate } = req.body;
+      const { name, seats, moviedate, timmingslot } = req.body;
+
       if (totalSeats != 0) {
         totalSeats -= seats;
         const amount = seats * 80;
@@ -20,6 +21,7 @@ module.exports = {
           amount,
           seatsAllocate: result,
           movieDate: moviedate,
+          timmingSlot: timmingslot,
           createdBy: req.user._id,
         });
         res.json({
