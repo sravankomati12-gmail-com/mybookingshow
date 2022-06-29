@@ -724,7 +724,7 @@
       formdata.append("sheet", file);
       $.ajax({
         type: "POST",
-        url: "<% url%>api/movie/upload",
+        url: "<%= url%>api/movie/upload",
         data: formdata,
         headers: headers,
         processData: false,
