@@ -88,8 +88,12 @@
         headers: headers,
         dataType: "json",
         success: (res) => {
-          localStorage.setItem("ticketId", res.data._id);
-          window.location = "/newpayment";
+          if (res.error) {
+            alert(res.error);
+          } else {
+            localStorage.setItem("ticketId", res.data._id);
+            window.location = "/newpayment";
+          }
         },
       });
     }

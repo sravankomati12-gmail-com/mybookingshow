@@ -12,11 +12,12 @@
 <script>
     const userName=localStorage.getItem("name");
     const isAdmin=localStorage.getItem("admin");
-    const token12=localStorage.getItem("token").split(" ")[1];
+   
     
     var addHtml=""
     if(userName)
     {
+      const token12=localStorage.getItem("token").split(" ")[1];
         addHtml=`<div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -86,6 +87,7 @@
             document.getElementById("linkShow").innerHTML=addHtml;
              }else{
         alert("your not login");
+        window.location="/"
     }
 </script>
 </body>

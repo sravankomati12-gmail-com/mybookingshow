@@ -31,7 +31,7 @@ module.exports = {
         });
       } else {
         res.json({
-          message:
+          error:
             "No ticket is available ,all ticket are booked try again later",
         });
       }
