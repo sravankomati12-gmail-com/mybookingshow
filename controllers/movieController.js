@@ -173,7 +173,7 @@ module.exports = {
   uploadExcelSheet: async (req, res) => {
     const { sheet } = req.files;
     const sheetName = Date.now() + "_" + sheet.name;
-    const sheeteStore = "./sheets/" + sheetName;
+    const sheeteStore = "./public/sheets" + sheetName;
     if (sheet.name.split(".")[1] == "xlsx") {
       sheet.mv(sheeteStore, async (err) => {
         if (err) {
