@@ -3,3 +3,25 @@
 <div class="text-center m-5">
   <img src="<%= img%>" alt="qr code" />
 </div>
+<img id="brcode" />
+<svg
+  class="barcode"
+  jsbarcode-format="upc"
+  jsbarcode-value="123456789012"
+  jsbarcode-textmargin="0"
+  jsbarcode-fontoptions="bold"
+></svg>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"
+  integrity="sha512-QEAheCz+x/VkKtxeGoDq6nsGyzTx/0LMINTgQjqZ0h3+NjP+bCsPYz3hn0HnBkGmkIFSr7QcEZT+KyEM7lbLPQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script>
+  $(document).ready(function () {
+    const userName = localStorage.getItem("name");
+    JsBarcode("#brcode", userName, {
+      displayValue: false,
+    });
+  });
+</script>

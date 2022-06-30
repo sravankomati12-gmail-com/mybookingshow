@@ -118,7 +118,7 @@
 
               <button
                 type="submit"
-                class="btn btn-primary"
+                class="btn btn-outline-primary"
                 onclick="event.preventDefault(); userUpdate();"
               >
                 Update user
@@ -127,7 +127,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
             Close
           </button>
         </div>
@@ -163,21 +163,21 @@
         <td>${data.gender}</td>
         <td>${data.isDeleted}</td>
         <td>${data.createdAt}</td>
-        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal"  data-target="#exampleModaladd" onclick='getUser(this.id)'>Edit</button></td>
-                <td><a class='btn btn-danger' id="${data._id}" onclick="deleteUser(this.id)">Delete</a></td>
+        <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal"  data-target="#exampleModaladd" onclick='getUser(this.id)'>Edit</button></td>
+                <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deleteUser(this.id)">Delete</a></td>
       </tr>`;
       
         }
         if (res.pages > 0) {
-          addHtmlPagination += `<ul class="pagination text-center">`;
+          addHtmlPagination += `<ul class="pagination text-center p-3">`;
           if (res.current == 1) {
-            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
           } else {
-            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
           }
           var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
           if (count !== 1) {
-            addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
           }
           for (
             ;
@@ -185,18 +185,18 @@
             count++
           ) {
             if (count == res.current) {
-              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             } else {
-              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             }
             if (count == Number(res.current) + 4 && count < res.pages) {
-              addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+              addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
           }
           if (res.current == res.pages) {
-            addHtmlPagination += `<li class="disabled"><button>Last</button></li>`;
+            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
           } else {
-            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">Last</button></li>`;
+            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
           }
         }
         addHtmlPagination += "</ul>";
@@ -337,8 +337,8 @@
         <td>${data.gender}</td>
         <td>${data.isDeleted}</td>
         <td>${data.createdAt}</td>
-        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal"  data-target="#exampleModaladd" onclick='getUser(this.id)'>Edit</button></td>
-                <td><a class='btn btn-danger' id="${data._id}" onclick="deleteUser(this.id)">Delete</a></td>
+        <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal"  data-target="#exampleModaladd" onclick='getUser(this.id)'>Edit</button></td>
+                <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deleteUser(this.id)">Delete</a></td>
       </tr>`;
       
         }

@@ -54,7 +54,11 @@
           <div class="card" id="showCard"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-outline-default"
+            data-dismiss="modal"
+          >
             Close
           </button>
         </div>
@@ -81,19 +85,19 @@
           // console.log(data);
           addHtml += `<tr>
             <td>${data.name}</td>
-            <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+            <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
       </tr>`;
         }
         if (res.pages > 0) {
-          addHtmlPagination += `<ul class="pagination text-center">`;
+          addHtmlPagination += `<ul class="pagination text-center p-3">`;
           if (res.current == 1) {
-            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
           } else {
-            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)">First</button></li>`;
+            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
           }
           var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
           if (count !== 1) {
-            addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
           }
           for (
             ;
@@ -101,18 +105,18 @@
             count++
           ) {
             if (count == res.current) {
-              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             } else {
-              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">${count}</button></li>`;
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             }
             if (count == Number(res.current) + 4 && count < res.pages) {
-              addHtmlPagination += `<li class="disabled"><button>...</button></li>`;
+              addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
           }
           if (res.current == res.pages) {
-            addHtmlPagination += `<li class="disabled"><button>Last</button></li>`;
+            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
           } else {
-            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)">Last</button></li>`;
+            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
           }
         }
         addHtmlPagination += "</ul>";
@@ -161,7 +165,7 @@
             </li>
           </ul>
 
-          <a href="/newticket" class="btn btn-danger">Book tickects</a>`;
+          <a href="/newticket" class="btn btn-outline-danger">Book tickects</a>`;
         document.getElementById("showCard").innerHTML = addHtml1;
       },
     });
@@ -181,7 +185,7 @@
           addHtml += `<tr>
         
         <td>${data.name}</td>
-        <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+        <td><a class='btn outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
       </tr>`;
         }
         document.getElementById("showMovies").innerHTML = addHtml;
@@ -200,7 +204,7 @@
           // console.log(data);
           addHtml += `<tr>
             <td>${data.name}</td>
-            <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+            <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
       </tr>`;
         }
         document.getElementById("showMovies").innerHTML = addHtml;

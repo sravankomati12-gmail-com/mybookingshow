@@ -94,9 +94,7 @@ frontendRoute.get("/qrcode", async (req, res) => {
     isAdmin: data.isAdmin,
     dob: String(data.dob).split("T")[0],
   };
-
   let img = await qrcode.toDataURL(JSON.stringify(present));
-
   res.render("qrCode", { img });
 });
 module.exports = frontendRoute;
