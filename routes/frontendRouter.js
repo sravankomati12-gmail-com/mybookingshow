@@ -58,29 +58,17 @@ frontendRoute.get("/order/:id", async (req, res) => {
   });
 });
 frontendRoute.get("/export", async (req, res) => {
-  let options = {
-    height: "11.25in",
-    width: "8.5in",
-    header: {
-      height: "20mm",
-    },
-    footer: {
-      height: "20mm",
-    },
-  };
   const data = await moviesInfo.find();
   res.render("pdfconvert", { data: data }, (err1, html) => {
     const path = Date.now() + "_report.pdf";
-    pdf
-      .create(html, options)
-      .toFile("./public/export/" + path, function (err, result) {
-        if (err) {
-          console.log(err);
-        }
-        var dataFile = fs.readFileSync("./public/export/" + path);
-        res.header("Content-Type", "application/pdf");
-        res.send(dataFile);
-      });
+    pdf.create(html).toFile("./public/export/" + path, function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+      var dataFile = fs.readFileSync("./public/export/" + path);
+      res.header("Content-Type", "application/pdf");
+      res.send(dataFile);
+    });
   });
 });
 frontendRoute.get("/qrcode", async (req, res) => {
