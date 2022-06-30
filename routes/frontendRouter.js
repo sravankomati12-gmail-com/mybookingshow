@@ -54,7 +54,6 @@ frontendRoute.get("/order/:id", async (req, res) => {
     order: data.paymentId,
     Id: data._id,
     amount: Number(data.amount) * 100,
-    path: process.env.api_url,
   });
 });
 frontendRoute.get("/export", async (req, res) => {
