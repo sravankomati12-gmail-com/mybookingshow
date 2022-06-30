@@ -415,11 +415,11 @@
       success: (res) => {
         for (var data of res.data) {
           addHtml += `<tr>
-               <td>${data.name}</td>
-        <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
-                <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
-                <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">Details</a></td>
-      </tr>`;
+                 <td>${data.name}</td>
+          <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                  <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                  <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">Details</a></td>
+        </tr>`;
         }
         if (res.pages > 0) {
           addHtmlPagination += `<ul class="pagination text-center p-3">`;
@@ -469,36 +469,36 @@
         const check = res.data.image;
         if (typeof check == "undefined") {
           addHtml1 += ` <img
-            class="card-img-top"
-            src=""
-            style="width: 150px; height: 100px"
-            alt="Card image cap"
-          />`;
+              class="card-img-top"
+              src=""
+              style="width: 150px; height: 100px"
+              alt="Card image cap"
+            />`;
         } else {
           addHtml1 += ` <img
-            class="card-img-top"
-            src="${check.split("4005/")[1]}"
-            style="width: 150px; height: 100px"
-            alt="Card image cap"
-          />`;
+              class="card-img-top"
+              src="${check.split("4005/")[1]}"
+              style="width: 150px; height: 100px"
+              alt="Card image cap"
+            />`;
         }
         addHtml1 += `
-          <div class="card-body">
-            <h5 class="card-title">Movie name: ${res.data.name}</h5>
-            <p class="card-text">Description: ${res.data.decription}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Director : ${res.data.director}</li>
-            <li class="list-group-item">Producers : ${res.data.producers}</li>
-            <li class="list-group-item">Language : ${res.data.language}</li>
-            <li class="list-group-item">Casting : ${res.data.casting}</li>
-            <li class="list-group-item">Rating : ${res.data.rating}</li>
-            <li class="list-group-item">
-              ReleaseDate : ${res.data.releaseDate.split("T")[0]}
-            </li>
-          </ul>
+            <div class="card-body">
+              <h5 class="card-title">Movie name: ${res.data.name}</h5>
+              <p class="card-text">Description: ${res.data.decription}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Director : ${res.data.director}</li>
+              <li class="list-group-item">Producers : ${res.data.producers}</li>
+              <li class="list-group-item">Language : ${res.data.language}</li>
+              <li class="list-group-item">Casting : ${res.data.casting}</li>
+              <li class="list-group-item">Rating : ${res.data.rating}</li>
+              <li class="list-group-item">
+                ReleaseDate : ${res.data.releaseDate.split("T")[0]}
+              </li>
+            </ul>
 
-          <a href="/newticket" class="btn btn-outline-danger">Book tickects</a>`;
+            <a href="/newticket" class="btn btn-outline-danger">Book tickects</a>`;
         document.getElementById("showCard").innerHTML = addHtml1;
       },
     });
@@ -608,12 +608,12 @@
           // console.log(data);
           addHtml += `<tr>
 
-        <td>${data.name}</td>
+          <td>${data.name}</td>
 
-        <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
-                <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
-                <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
-     </tr>`;
+          <td><button class='btn btn-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                  <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                  <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+       </tr>`;
         }
         document.getElementById("showMovies").innerHTML = addHtml;
       },
@@ -764,11 +764,11 @@
         for (var data of res.data) {
           console.log();
           addHtml += `<tr>
-               <td>${data.name}</td>
-        <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
-                <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
-                <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
-      </tr>`;
+                 <td>${data.name}</td>
+          <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
+                  <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
+                  <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
+        </tr>`;
         }
         document.getElementById("showMovies").innerHTML = addHtml;
       },

@@ -3,7 +3,7 @@
 <div class="text-center m-5">
   <img src="<%= img%>" alt="qr code" />
 </div>
-<img id="brcode" />
+
 <svg
   class="barcode"
   jsbarcode-format="upc"
@@ -20,7 +20,8 @@
 <script>
   $(document).ready(function () {
     const userName = localStorage.getItem("name");
-    JsBarcode("#brcode", userName, {
+
+    JsBarcode(".barcode", userName, {
       displayValue: false,
     });
   });
