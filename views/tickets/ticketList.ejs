@@ -33,9 +33,12 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        console.log(res);
-        for (var data of res.data) {
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          console.log(res);
+          for (var data of res.data) {
+            addHtml += `<tr>
         <td>${data.movieName}</td>
         <td>${data.seatBookedNo}</td>
         <td>${data.amount}</td>
@@ -48,42 +51,43 @@
           data._id
         }" onclick="deletetickect(this.id)">Delete</a></td>
       </tr>`;
-        }
+          }
 
-        if (res.pages > 0) {
-          addHtmlPagination += `<ul class="pagination text-center p-3">`;
-          if (res.current == 1) {
-            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
-          } else {
-            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
-          }
-          var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
-          if (count !== 1) {
-            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
-          }
-          for (
-            ;
-            count < Number(res.current) + 4 && count <= res.pages;
-            count++
-          ) {
-            if (count == res.current) {
-              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+          if (res.pages > 0) {
+            addHtmlPagination += `<ul class="pagination text-center p-3">`;
+            if (res.current == 1) {
+              addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
             } else {
-              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
             }
-            if (count == Number(res.current) + 4 && count < res.pages) {
+            var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
+            if (count !== 1) {
               addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
+            for (
+              ;
+              count < Number(res.current) + 4 && count <= res.pages;
+              count++
+            ) {
+              if (count == res.current) {
+                addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              } else {
+                addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              }
+              if (count == Number(res.current) + 4 && count < res.pages) {
+                addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
+              }
+            }
+            if (res.current == res.pages) {
+              addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
+            } else {
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
+            }
           }
-          if (res.current == res.pages) {
-            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
-          } else {
-            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
-          }
+          addHtmlPagination += "</ul>";
+          document.getElementById("pagination").innerHTML = addHtmlPagination;
+          document.getElementById("showtickets").innerHTML = addHtml;
         }
-        addHtmlPagination += "</ul>";
-        document.getElementById("pagination").innerHTML = addHtmlPagination;
-        document.getElementById("showtickets").innerHTML = addHtml;
       },
     });
   }
@@ -94,7 +98,11 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        window.location.reload();
+        if (res.error) {
+          alert(res.error);
+        } else {
+          window.location.reload();
+        }
       },
     });
   }
@@ -106,8 +114,11 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        for (var data of res.data) {
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          for (var data of res.data) {
+            addHtml += `<tr>
         <td>${data.movieName}</td>
         <td>${data.seatBookedNo}</td>
         <td>${data.amount}</td>
@@ -120,8 +131,9 @@
           data._id
         }" onclick="deletetickect(this.id)">Delete</a></td>
       </tr>`;
+          }
+          document.getElementById("showtickets").innerHTML = addHtml;
         }
-        document.getElementById("showtickets").innerHTML = addHtml;
       },
     });
   }

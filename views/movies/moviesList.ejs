@@ -413,48 +413,52 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        for (var data of res.data) {
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          for (var data of res.data) {
+            addHtml += `<tr>
                  <td>${data.name}</td>
           <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
                   <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
                   <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">Details</a></td>
         </tr>`;
-        }
-        if (res.pages > 0) {
-          addHtmlPagination += `<ul class="pagination text-center p-3">`;
-          if (res.current == 1) {
-            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
-          } else {
-            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
           }
-          var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
-          if (count !== 1) {
-            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
-          }
-          for (
-            ;
-            count < Number(res.current) + 4 && count <= res.pages;
-            count++
-          ) {
-            if (count == res.current) {
-              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+          if (res.pages > 0) {
+            addHtmlPagination += `<ul class="pagination text-center p-3">`;
+            if (res.current == 1) {
+              addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
             } else {
-              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
             }
-            if (count == Number(res.current) + 4 && count < res.pages) {
+            var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
+            if (count !== 1) {
               addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
+            for (
+              ;
+              count < Number(res.current) + 4 && count <= res.pages;
+              count++
+            ) {
+              if (count == res.current) {
+                addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              } else {
+                addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              }
+              if (count == Number(res.current) + 4 && count < res.pages) {
+                addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
+              }
+            }
+            if (res.current == res.pages) {
+              addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
+            } else {
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
+            }
           }
-          if (res.current == res.pages) {
-            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
-          } else {
-            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
-          }
+          addHtmlPagination += "</ul>";
+          document.getElementById("showMovies").innerHTML = addHtml;
+          document.getElementById("pagination").innerHTML = addHtmlPagination;
         }
-        addHtmlPagination += "</ul>";
-        document.getElementById("showMovies").innerHTML = addHtml;
-        document.getElementById("pagination").innerHTML = addHtmlPagination;
       },
     });
   }
@@ -466,23 +470,26 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        const check = res.data.image;
-        if (typeof check == "undefined") {
-          addHtml1 += ` <img
+        if (res.error) {
+          alert(res.error);
+        } else {
+          const check = res.data.image;
+          if (typeof check == "undefined") {
+            addHtml1 += ` <img
               class="card-img-top"
               src=""
               style="width: 150px; height: 100px"
               alt="Card image cap"
             />`;
-        } else {
-          addHtml1 += ` <img
+          } else {
+            addHtml1 += ` <img
               class="card-img-top"
               src="${check.split("4005/")[1]}"
               style="width: 150px; height: 100px"
               alt="Card image cap"
             />`;
-        }
-        addHtml1 += `
+          }
+          addHtml1 += `
             <div class="card-body">
               <h5 class="card-title">Movie name: ${res.data.name}</h5>
               <p class="card-text">Description: ${res.data.decription}</p>
@@ -499,7 +506,8 @@
             </ul>
 
             <a href="/newticket" class="btn btn-outline-danger">Book tickects</a>`;
-        document.getElementById("showCard").innerHTML = addHtml1;
+          document.getElementById("showCard").innerHTML = addHtml1;
+        }
       },
     });
   }
@@ -590,7 +598,11 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        window.location.reload();
+        if (res.error) {
+          alert(res.error);
+        } else {
+          window.location.reload();
+        }
       },
     });
   }
@@ -604,9 +616,12 @@
       headers: headers,
       dataType: "json",
       success: (res) => {
-        for (var data of res.data) {
-          // console.log(data);
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          for (var data of res.data) {
+            // console.log(data);
+            addHtml += `<tr>
 
           <td>${data.name}</td>
 
@@ -614,8 +629,9 @@
                   <td><a class='btn btn-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
                   <td><a class='btn btn-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
        </tr>`;
+          }
+          document.getElementById("showMovies").innerHTML = addHtml;
         }
-        document.getElementById("showMovies").innerHTML = addHtml;
       },
     });
   }
@@ -626,18 +642,22 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        // console.log(res);
-        document.getElementById("movieName1").value = res.data.name;
-        document.getElementById("movieid").value = res.data._id;
-        document.getElementById("decription1").value = res.data.decription;
-        document.getElementById("language1").value = res.data.language;
-        document.getElementById("releaseDate1").value =
-          res.data.releaseDate.split("T")[0];
-        document.getElementById("rating1").value = res.data.rating;
-        document.getElementById("director1").value = res.data.director;
-        document.getElementById("producers1").value = res.data.producers;
-        // document.getElementById("image2").value = res.data.image;
-        document.getElementById("casting1").value = res.data.casting;
+        if (res.error) {
+          alert(res.error);
+        } else {
+          // console.log(res);
+          document.getElementById("movieName1").value = res.data.name;
+          document.getElementById("movieid").value = res.data._id;
+          document.getElementById("decription1").value = res.data.decription;
+          document.getElementById("language1").value = res.data.language;
+          document.getElementById("releaseDate1").value =
+            res.data.releaseDate.split("T")[0];
+          document.getElementById("rating1").value = res.data.rating;
+          document.getElementById("director1").value = res.data.director;
+          document.getElementById("producers1").value = res.data.producers;
+          // document.getElementById("image2").value = res.data.image;
+          document.getElementById("casting1").value = res.data.casting;
+        }
       },
     });
   }
@@ -760,17 +780,21 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        console.log(res);
-        for (var data of res.data) {
-          console.log();
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          console.log(res);
+          for (var data of res.data) {
+            console.log();
+            addHtml += `<tr>
                  <td>${data.name}</td>
           <td><button class='btn btn-outline-warning' id="${data._id}" data-toggle="modal" data-target="#exampleModaledit" onclick='editMovie(this.id)'>Edit</button></td>
                   <td><a class='btn btn-outline-danger' id="${data._id}" onclick="deletemovie(this.id)">Delete</a></td>
                   <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
         </tr>`;
+          }
+          document.getElementById("showMovies").innerHTML = addHtml;
         }
-        document.getElementById("showMovies").innerHTML = addHtml;
       },
     });
   }

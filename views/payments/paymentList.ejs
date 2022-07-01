@@ -72,9 +72,12 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        for (var data of res.data) {
-          // console.log(data);
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          for (var data of res.data) {
+            // console.log(data);
+            addHtml += `<tr>
         
         <td>${data.acountNo}</td>
         <td>${data.paymentOpt}</td>
@@ -85,41 +88,42 @@
         <td>${data.createdAt}</td>
         <td><a class='btn btn-outline-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>
       </tr>`;
-        }
-        if (res.pages > 0) {
-          addHtmlPagination += `<ul class="pagination text-center p-3">`;
-          if (res.current == 1) {
-            addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
-          } else {
-            addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
           }
-          var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
-          if (count !== 1) {
-            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
-          }
-          for (
-            ;
-            count < Number(res.current) + 4 && count <= res.pages;
-            count++
-          ) {
-            if (count == res.current) {
-              addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+          if (res.pages > 0) {
+            addHtmlPagination += `<ul class="pagination text-center p-3">`;
+            if (res.current == 1) {
+              addHtmlPagination += `<li class="disabled"><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
             } else {
-              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              addHtmlPagination += `<li><button id="1" onclick="getPagination(this.id)" class="btn btn-outline-dark">First</button></li>`;
             }
-            if (count == Number(res.current) + 4 && count < res.pages) {
+            var count = Number(res.current) > 5 ? Number(res.current) - 4 : 1;
+            if (count !== 1) {
               addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
+            for (
+              ;
+              count < Number(res.current) + 4 && count <= res.pages;
+              count++
+            ) {
+              if (count == res.current) {
+                addHtmlPagination += `<li class="active"><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              } else {
+                addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
+              }
+              if (count == Number(res.current) + 4 && count < res.pages) {
+                addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
+              }
+            }
+            if (res.current == res.pages) {
+              addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
+            } else {
+              addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
+            }
           }
-          if (res.current == res.pages) {
-            addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">Last</button></li>`;
-          } else {
-            addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">Last</button></li>`;
-          }
+          addHtmlPagination += "</ul>";
+          document.getElementById("showUsers").innerHTML = addHtml;
+          document.getElementById("pagination").innerHTML = addHtmlPagination;
         }
-        addHtmlPagination += "</ul>";
-        document.getElementById("showUsers").innerHTML = addHtml;
-        document.getElementById("pagination").innerHTML = addHtmlPagination;
       },
     });
   }
@@ -131,7 +135,10 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        addHtml1 += `
+        if (res.error) {
+          alert(res.error);
+        } else {
+          addHtml1 += `
         <li class="list-group-item">Account holder name : ${
           res.data.userName
         }</li>
@@ -161,7 +168,8 @@
           res.data.ticket.createdAt
         }</li>
         `;
-        document.getElementById("getPaymentById").innerHTML = addHtml1;
+          document.getElementById("getPaymentById").innerHTML = addHtml1;
+        }
       },
     });
   }
@@ -173,9 +181,12 @@
       headers: headers,
       // dataType: "json",
       success: (res) => {
-        for (var data of res.data) {
-          // console.log(data);
-          addHtml += `<tr>
+        if (res.error) {
+          alert(res.error);
+        } else {
+          for (var data of res.data) {
+            // console.log(data);
+            addHtml += `<tr>
         
         <td>${data.acountNo}</td>
         <td>${data.paymentOpt}</td>
@@ -186,8 +197,9 @@
         <td>${data.createdAt}</td>
         <td><a class='btn btn-outline-warning' id="${data._id}" onclick="getpayment(this.id)" data-toggle="modal" data-target="#exampleModal">details</a></td>
       </tr>`;
+          }
+          document.getElementById("showUsers").innerHTML = addHtml;
         }
-        document.getElementById("showUsers").innerHTML = addHtml;
       },
     });
   }
