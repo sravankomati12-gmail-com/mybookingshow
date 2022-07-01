@@ -21,7 +21,6 @@ function sendMail(toEmail, data) {
       console.log("Err :>> ", err.message);
     } else {
       console.log("Email is sended");
-      // res1.status(200).json({ message: "mail is Succfully sended" });
     }
   });
 }

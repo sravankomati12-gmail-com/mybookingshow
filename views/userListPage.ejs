@@ -148,10 +148,9 @@
     $.ajax({
       type: "GET",
       url:
-        "<% url%>api/user/list?page=1",
+        "/api/user/list?page=1",
       headers: headers,
-      // dataType: "json",
-      success: (res) => {
+           success: (res) => {
         if (res.error) {
           alert(res.error);
         } else {
@@ -183,7 +182,7 @@
           }
           for (
             ;
-            count < Number(res.current) + 4 && count <= res.pages;
+            count < Number(res.current) + (res.pages - 1) && count <= res.pages;
             count++
           ) {
             if (count == res.current) {
@@ -191,7 +190,7 @@
             } else {
               addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             }
-            if (count == Number(res.current) + 4 && count < res.pages) {
+            if (count == Number(res.current) + (res.pages - 1) && count < res.pages) {
               addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
           }
@@ -212,10 +211,9 @@
     var addHtml = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/user/getuserbyid?id=" + id,
+      url: "/api/user/getuserbyid?id=" + id,
       headers: headers,
-      // dataType: "json",
-      success: (res) => {
+           success: (res) => {
         if (res.error) {
           alert(res.error);
         } else {
@@ -224,8 +222,7 @@
         document.getElementById("email").value = res.data.email;
         document.getElementById("phone").value = res.data.phone;
         document.getElementById("dob").value = res.data.dob.split("T")[0];
-        // document.getElementById("dob").value = res.data.dob;
-        if (res.data.gender == "male") {
+           if (res.data.gender == "male") {
           document.getElementById("male").checked = true;
         } else {
           document.getElementById("female").checked = true;
@@ -296,7 +293,7 @@
       console.log(data);
       $.ajax({
         type: "POST",
-        url: "<% url%>api/user/update",
+        url: "/api/user/update",
         data: data,
         headers: headers,
         dataType: "json",
@@ -304,8 +301,7 @@
           if (res.error) {
           alert(res.error);
         } else {
-          // console.log(res);
-          window.location.reload();
+                  window.location.reload();
         }
         },
       });
@@ -316,10 +312,9 @@
     if (result) {
       $.ajax({
         type: "DELETE",
-        url: "<% url%>api/user/delete?id=" + id,
+        url: "/api/user/delete?id=" + id,
         headers: headers,
-        // dataType: "json",
-        success: (res) => {
+             success: (res) => {
           if (res.error) {
           alert(res.error);
         } else {
@@ -336,9 +331,8 @@
     $.ajax({
       type: "GET",
       url:
-        "<% url%>api/user/list?page=" + id,
+        "/api/user/list?page=" + id,
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         if (res.error) {
           alert(res.error);

@@ -65,7 +65,7 @@
           var data = { email, password };
           $.ajax({
             type: "POST",
-            url: "<% url%>api/notoken/checkuser",
+            url: "/api/notoken/checkuser",
             data: data,
             dataType: "json",
             success: (res) => {

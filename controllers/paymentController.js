@@ -45,14 +45,14 @@ module.exports = {
     const { page = 1 } = req.query;
     const data = await paymentModel
       .find()
-      .skip(10 * page - 10)
-      .limit(10);
+      .skip(5 * page - 5)
+      .limit(5);
     const count = await paymentModel.count();
     res.json({
       message: "List of payments",
       data,
       current: page,
-      pages: Math.ceil(count / 10),
+      pages: Math.ceil(count / 5),
     });
   },
   getPaymentById: async (req, res) => {

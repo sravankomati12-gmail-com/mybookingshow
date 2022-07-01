@@ -3,7 +3,7 @@
   "info": {
     "openapi": "3.0.0",
     "version": "1.0.0",
-    "title": "Movies  management system",
+    "title": "My Booking Shows",
     "description": "Movies management application api`s",
     "contact": {
       "email": "sravankomati.vision@gmail.com"

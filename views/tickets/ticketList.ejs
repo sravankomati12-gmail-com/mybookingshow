@@ -29,9 +29,8 @@
     addHtmlPagination = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/ticket/ticketList?page=1",
+      url: "/api/ticket/ticketList?page=1",
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         if (res.error) {
           alert(res.error);
@@ -66,7 +65,8 @@
             }
             for (
               ;
-              count < Number(res.current) + 4 && count <= res.pages;
+              count < Number(res.current) + (res.pages - 1) &&
+              count <= res.pages;
               count++
             ) {
               if (count == res.current) {
@@ -74,7 +74,10 @@
               } else {
                 addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
               }
-              if (count == Number(res.current) + 4 && count < res.pages) {
+              if (
+                count == Number(res.current) + (res.pages - 1) &&
+                count < res.pages
+              ) {
                 addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
               }
             }
@@ -94,9 +97,9 @@
   function deletetickect(id) {
     $.ajax({
       type: "DELETE",
-      url: "<% url%>api/ticket/ticketdelete?id=" + id,
+      url: "/api/ticket/ticketdelete?id=" + id,
       headers: headers,
-      // dataType: "json",
+
       success: (res) => {
         if (res.error) {
           alert(res.error);
@@ -110,9 +113,8 @@
     addHtml = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/ticket/ticketList?page=" + id,
+      url: "/api/ticket/ticketList?page=" + id,
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         if (res.error) {
           alert(res.error);

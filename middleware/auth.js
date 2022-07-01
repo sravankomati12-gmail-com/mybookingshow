@@ -106,7 +106,7 @@ module.exports = {
       }
     } catch (error) {
       console.log(error.messsage);
-      // res.json({ error: "All fields must be define" });
+      res.json({ error: "All fields must be define" });
     }
   },
   ticketValidation: async (req, res, next) => {
@@ -129,7 +129,6 @@ module.exports = {
   },
   paymentValidation: async (req, res, next) => {
     const { acountno, currency, username, ticket } = req.body;
-
     try {
       if (valid.isEmpty(acountno)) {
         res.json({ error: "The acountno field is not empty" });

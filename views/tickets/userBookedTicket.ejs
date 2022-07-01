@@ -26,9 +26,8 @@
     addHtmlPagination = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/ticket/ticketsbooked?page=1",
+      url: "/api/ticket/ticketsbooked?page=1",
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         for (var data of res.data) {
           addHtml += `<tr>
@@ -54,7 +53,7 @@
           }
           for (
             ;
-            count < Number(res.current) + 4 && count <= res.pages;
+            count < Number(res.current) + (res.pages - 1) && count <= res.pages;
             count++
           ) {
             if (count == res.current) {
@@ -62,7 +61,10 @@
             } else {
               addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             }
-            if (count == Number(res.current) + 4 && count < res.pages) {
+            if (
+              count == Number(res.current) + (res.pages - 1) &&
+              count < res.pages
+            ) {
               addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
           }
@@ -82,9 +84,8 @@
     addHtml = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/ticket/ticketsbooked?page=" + id,
+      url: "/api/ticket/ticketsbooked?page=" + id,
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         for (var data of res.data) {
           addHtml += `<tr>

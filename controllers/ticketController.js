@@ -45,14 +45,14 @@ module.exports = {
       const data = await ticketModel
         .find({ createdBy: req.user._id })
         .populate("createdBy")
-        .skip(10 * page - 10)
-        .limit(10);
+        .skip(5 * page - 5)
+        .limit(5);
       const count = await ticketModel.count();
       res.json({
         message: "list of  tickets you booked",
         data,
         current: page,
-        pages: Math.ceil(count / 10),
+        pages: Math.ceil(count / 5),
       });
     } catch (error) {
       res.json({ message: error.message });

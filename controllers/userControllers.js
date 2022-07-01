@@ -85,14 +85,14 @@ module.exports = {
       const { page = 1 } = req.query;
       const data = await userModel
         .find()
-        .skip(10 * page - 10)
-        .limit(10);
+        .skip(5 * page - 5)
+        .limit(5);
       const count = await userModel.count();
       res.json({
         message: "List of users",
         data,
         current: page,
-        pages: Math.ceil(count / 10),
+        pages: Math.ceil(count / 5),
       });
     } catch (error) {
       res.json({ message: error.message });
@@ -217,7 +217,6 @@ module.exports = {
         res.json({ message: "Fields not be empty" });
       }
     } catch (error) {
-      // console.log(error.message);
       res.json({ message: "Fields should be  define" });
     }
   },

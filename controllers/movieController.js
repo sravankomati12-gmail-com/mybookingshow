@@ -1,5 +1,4 @@
 const movieModel = require("../models/movieModel");
-const movieModel123 = require("../models/moviesModel");
 const fs = require("fs");
 const xlsxFile = require("read-excel-file/node");
 const path = process.env.imagepath;
@@ -42,7 +41,6 @@ module.exports = {
         }
       });
     } catch (error) {
-      // console.log(error.message);
       res.json({ error: error.message });
     }
   },
@@ -52,14 +50,14 @@ module.exports = {
       const data = await movieModel
         .find()
         .select({ name: 1, _id: 1, image: 1 })
-        .skip(10 * page - 10)
-        .limit(10);
+        .skip(5 * page - 5)
+        .limit(5);
       const count = await movieModel.count();
       res.json({
         message: "List of movies",
         data,
         current: page,
-        pages: Math.ceil(count / 10),
+        pages: Math.ceil(count / 5),
       });
     } catch (error) {
       console.log(error.message);
@@ -159,9 +157,7 @@ module.exports = {
   },
   searchMovie: async (req, res) => {
     try {
-      // console.log(req.body);
       const { name } = req.body;
-      // const result = await movieModel.find(req.body);
       const data = await movieModel.find({
         name: { $regex: `${name}`, $options: "i" },
       });

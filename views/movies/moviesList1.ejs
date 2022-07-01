@@ -31,7 +31,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">movie name</th>
+        <th scope="col">Movie name</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -77,12 +77,10 @@
     addHtml = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/movie/allmovies??page=1",
+      url: "/api/movie/allmovies??page=1",
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         for (var data of res.data) {
-          // console.log(data);
           addHtml += `<tr>
             <td>${data.name}</td>
             <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
@@ -101,7 +99,7 @@
           }
           for (
             ;
-            count < Number(res.current) + 4 && count <= res.pages;
+            count < Number(res.current) + (res.pages - 1) && count <= res.pages;
             count++
           ) {
             if (count == res.current) {
@@ -109,7 +107,10 @@
             } else {
               addHtmlPagination += `<li><button id="${count}" onclick="getPagination(this.id)" class="btn btn-outline-dark">${count}</button></li>`;
             }
-            if (count == Number(res.current) + 4 && count < res.pages) {
+            if (
+              count == Number(res.current) + (res.pages - 1) &&
+              count < res.pages
+            ) {
               addHtmlPagination += `<li class="disabled"><button class="btn btn-outline-dark">...</button></li>`;
             }
           }
@@ -129,9 +130,8 @@
     var addHtml1 = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/movie/moviebyid?id=" + id,
+      url: "/api/movie/moviebyid?id=" + id,
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         const check = res.data.image;
         if (typeof check == "undefined") {
@@ -175,13 +175,12 @@
     addHtml = "";
     $.ajax({
       type: "POST",
-      url: "<% url%>api/movie/moviesearch",
+      url: "/api/movie/moviesearch",
       data: { name },
       headers: headers,
       dataType: "json",
       success: (res) => {
         for (var data of res.data) {
-          // console.log(data);
           addHtml += `<tr>
         
         <td>${data.name}</td>
@@ -196,12 +195,10 @@
     addHtml = "";
     $.ajax({
       type: "GET",
-      url: "<% url%>api/movie/allmovies?page=" + id,
+      url: "/api/movie/allmovies?page=" + id,
       headers: headers,
-      // dataType: "json",
       success: (res) => {
         for (var data of res.data) {
-          // console.log(data);
           addHtml += `<tr>
             <td>${data.name}</td>
             <td><a class='btn btn-outline-info' id="${data._id}" onclick="getmovie(this.id)" data-toggle="modal" data-target="#myModal">details</a></td>
