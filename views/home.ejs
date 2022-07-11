@@ -7,6 +7,7 @@
         </button>
         <div id="linkShow">
         </div>     
+        
     </nav>
 </div>
 <script>
@@ -83,12 +84,14 @@
             }
             addHtml+=`<li class="nav-item">
               <a class="nav-link" href="/">Logout</a>
-            </li></ul>  </div>`;
+            </li></ul>  <div id="google_translate_element"></div></div> `;
             document.getElementById("linkShow").innerHTML=addHtml;
              }else{
         alert("your not login");
         window.location="/"
     }
 </script>
+
+
 </body>
 </html>
